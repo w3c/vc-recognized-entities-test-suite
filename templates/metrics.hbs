@@ -1,0 +1,133 @@
+{{!--
+SPDX-License-Identifier: LicenseRef-w3c-3-clause-bsd-license-2008 OR LicenseRef-w3c-test-suite-license-2023
+Lays out the results in the order of the TR's table of contents. Each
+matrixByTitle slot takes the matrix whose describe title has that heading
+(section numbers are ignored). A heading is shown only when it, or a heading
+under it, has a matrix with results (ifMatrix). Headings with no tests are
+hidden.
+--}}
+
+<style>
+  /* RFC 2119 keywords in statements, as the TR shows them. */
+  strong.rfc2119 { color: #7a2e00; }
+  /* Full statement in a bubble on hover or keyboard focus. */
+  .stmt { position: relative; display: inline-block; white-space: nowrap; }
+  .stmt .bubble {
+    display: none; position: absolute; left: 0; top: 100%; z-index: 10;
+    width: max-content; max-width: 32rem; padding: 0.4rem 0.6rem;
+    margin-top: 0.25rem; border: 1px solid #b9b7b7; border-radius: 6px;
+    background: #ffffff; color: #1d1d1b; box-shadow: 0 2px 8px rgba(0,0,0,.2);
+    font-size: 0.8rem; line-height: 1.35; white-space: normal; text-align: left;
+  }
+  .stmt:hover .bubble, .stmt:focus-within .bubble { display: block; }
+  :root[data-theme="dark"] .stmt .bubble { background: #1f1f1d; color: #ecebe6; border-color: #33332f; }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) .stmt .bubble { background: #1f1f1d; color: #ecebe6; border-color: #33332f; }
+  }
+  :root[data-theme="dark"] strong.rfc2119 { color: #ffb27a; }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) strong.rfc2119 { color: #ffb27a; }
+  }
+</style>
+
+
+{{#ifMatrix "Conformance"}}
+<section id="introduction">
+  <h2>1 Introduction</h2>
+  <section id="conformance">
+    <h3>1.1 Conformance</h3>
+    {{#matrixByTitle "Conformance"}}{{> matrix.hbs matrix=. bare=true}}{{/matrixByTitle}}
+  </section>
+</section>
+{{/ifMatrix}}
+
+{{#ifMatrix "General Properties" "RecognizedEntity" "RecognizedAction" "RecognizedEntityCredential" "Credential Validators"}}
+<section id="data-model">
+  <h2>3 Data Model</h2>
+  {{#ifMatrix "General Properties"}}
+  <section id="general-properties">
+    <h3>3.1 General Properties</h3>
+    {{#matrixByTitle "General Properties"}}{{> matrix.hbs matrix=. bare=true}}{{/matrixByTitle}}
+  </section>
+  {{/ifMatrix}}
+  {{#ifMatrix "RecognizedEntity"}}
+  <section id="recognizedentity">
+    <h3>3.2 RecognizedEntity</h3>
+    {{#matrixByTitle "RecognizedEntity"}}{{> matrix.hbs matrix=. bare=true}}{{/matrixByTitle}}
+  </section>
+  {{/ifMatrix}}
+  {{#ifMatrix "RecognizedAction"}}
+  <section id="recognizedaction">
+    <h3>3.3 RecognizedAction</h3>
+    {{#matrixByTitle "RecognizedAction"}}{{> matrix.hbs matrix=. bare=true}}{{/matrixByTitle}}
+  </section>
+  {{/ifMatrix}}
+  {{#ifMatrix "RecognizedEntityCredential"}}
+  <section id="recognizedentitycredential">
+    <h3>3.4 RecognizedEntityCredential</h3>
+    {{#matrixByTitle "RecognizedEntityCredential"}}{{> matrix.hbs matrix=. bare=true}}{{/matrixByTitle}}
+  </section>
+  {{/ifMatrix}}
+  {{#ifMatrix "Credential Validators"}}
+  <section id="credential-validators">
+    <h3>3.5 Credential Validators</h3>
+    {{#matrixByTitle "Credential Validators"}}{{> matrix.hbs matrix=. bare=true}}{{/matrixByTitle}}
+  </section>
+  {{/ifMatrix}}
+</section>
+{{/ifMatrix}}
+
+{{#ifMatrix "Identifier-based Discovery (derived)" "Recognition Validation (derived)" "Credential Validation" "JavaScript Validator Processing" "JavaScript Credential Validation Function"}}
+<section id="algorithms">
+  <h2>4 Algorithms</h2>
+  {{#ifMatrix "Identifier-based Discovery (derived)"}}
+  <section id="identifier-based-discovery">
+    <h3>4.2 Identifier-based Discovery</h3>
+    {{#matrixByTitle "Identifier-based Discovery (derived)"}}{{> matrix.hbs matrix=. bare=true}}{{/matrixByTitle}}
+  </section>
+  {{/ifMatrix}}
+  {{#ifMatrix "Recognition Validation (derived)"}}
+  <section id="recognition-validation">
+    <h3>4.3 Recognition Validation</h3>
+    {{#matrixByTitle "Recognition Validation (derived)"}}{{> matrix.hbs matrix=. bare=true}}{{/matrixByTitle}}
+  </section>
+  {{/ifMatrix}}
+  {{#ifMatrix "Credential Validation" "JavaScript Validator Processing" "JavaScript Credential Validation Function"}}
+  <section id="credential-validation">
+    <h3>4.4 Credential Validation</h3>
+    {{#matrixByTitle "Credential Validation"}}{{> matrix.hbs matrix=. bare=true}}{{/matrixByTitle}}
+    {{#ifMatrix "JavaScript Validator Processing" "JavaScript Validator Processing (derived)" "JavaScript Credential Validation Function"}}
+    <section id="javascript-validator-processing">
+      <h4>4.4.1 JavaScript Validator Processing</h4>
+      {{#matrixByTitle "JavaScript Validator Processing"}}{{> matrix.hbs matrix=. bare=true}}{{/matrixByTitle}}
+      {{#matrixByTitle "JavaScript Validator Processing (derived)"}}{{> matrix.hbs matrix=. bare=true}}{{/matrixByTitle}}
+      {{#ifMatrix "JavaScript Credential Validation Function"}}
+      <section id="javascript-credential-validation-function">
+        <h5>4.4.1.1 JavaScript Credential Validation Function</h5>
+        {{#matrixByTitle "JavaScript Credential Validation Function"}}{{> matrix.hbs matrix=. bare=true}}{{/matrixByTitle}}
+      </section>
+      {{/ifMatrix}}
+    </section>
+    {{/ifMatrix}}
+  </section>
+  {{/ifMatrix}}
+</section>
+{{/ifMatrix}}
+
+{{#if (unplacedMatrices)}}
+<section id="other-results">
+  <h2>Other Results</h2>
+  {{#each (unplacedMatrices)}}
+  {{> matrix.hbs matrix=. bare=false}}
+  {{/each}}
+</section>
+{{/if}}
+{{#ifMatrix "At Risk"}}
+  <section id="at-risk">
+    <h2>At Risk</h2>
+    <details id="at-risk-toggle">
+      <summary>Show features at risk</summary>
+      {{#matrixByTitle "At Risk"}}{{> matrix.hbs matrix=. bare=true}}{{/matrixByTitle}}
+    </details>
+  </section>
+  {{/ifMatrix}}

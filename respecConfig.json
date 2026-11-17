@@ -1,0 +1,28 @@
+{
+  "specStatus": "unofficial",
+  "shortName": "vc-recognized-entities-test-suite",
+  "github": "https://github.com/w3c/vc-recognized-entities-test-suite",
+  "group": "vc",
+  "subtitle": "Recognized Entities Interoperability Report",
+  "title": "Recognized Entities Interoperability Report",
+  "edDraftURI": "https://w3c.github.io/vc-recognized-entities-test-suite/",
+  "doJsonLd": true,
+  "includePermalinks": false,
+  "otherLinks": [
+    {
+      "key": "Related Specifications",
+      "data": [
+        {
+          "value": "Recognized Entities v1.0",
+          "href": "https://www.w3.org/TR/vc-recognized-entities-1.0/"
+        }
+      ]
+    }
+  ],
+  "editors": [
+    {
+      "name": "Patrick St-Louis",
+      "company": "Digital Bazaar"
+    }
+  ]
+}
