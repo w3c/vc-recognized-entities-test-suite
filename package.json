@@ -1,0 +1,39 @@
+{
+  "name": "vc-recognized-entities-test-suite",
+  "version": "0.1.0",
+  "description": "Interoperability tests for Recognized Entities v1.0",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "test": "mocha --require ./templates/register-helpers.cjs 'tests/**/*.spec.js' --timeout 15000 --preserve-symlinks --reporter @digitalbazaar/mocha-w3c-interop-reporter --reporter-options abstract=\"$PWD/abstract.hbs\",reportDir=\"$PWD/reports\",respec=\"$PWD/respecConfig.json\",title=\"Recognized Entities Interoperability Report\",suiteLog='./reports/suite.log',templateData=\"$PWD/reports/index.json\",metrics=\"$PWD/templates/metrics.hbs\",matrix=\"$PWD/templates/matrix.hbs\"",
+    "test:tools": "mocha 'tools/**/*.spec.js' --timeout 15000",
+    "scaffold": "node scripts/scaffold-tests.mjs",
+    "lint": "eslint --ext .js,.mjs,.cjs .",
+    "preflight": "node scripts/preflight.mjs"
+  },
+  "license": "(LicenseRef-w3c-3-clause-bsd-license-2008 OR LicenseRef-w3c-test-suite-license-2023)",
+  "engines": {
+    "node": ">=18"
+  },
+  "dependencies": {
+    "chai": "^4.3.7",
+    "mocha": "^11.7.5",
+    "vc-test-suite-implementations": "github:w3c/vc-test-suite-implementations"
+  },
+  "devDependencies": {
+    "@digitalbazaar/credentials-context": "3.2.0",
+    "@digitalbazaar/data-integrity": "2.5.0",
+    "@digitalbazaar/data-integrity-context": "2.0.1",
+    "@digitalbazaar/ed25519-multikey": "1.3.1",
+    "@digitalbazaar/eddsa-jcs-2022-cryptosuite": "1.0.0",
+    "@digitalbazaar/mocha-w3c-interop-reporter": "^1.10.0",
+    "@digitalbazaar/vc": "7.1.1",
+    "acorn": "^8.14.0",
+    "eslint": "^8.57.1",
+    "eslint-config-digitalbazaar": "^5.0.1",
+    "eslint-plugin-jsdoc": "^48.11.0",
+    "eslint-plugin-unicorn": "^49.0.0",
+    "jsonld-signatures": "^10.0.0",
+    "quickjs-emscripten": "0.31.0"
+  }
+}
