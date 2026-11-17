@@ -1,0 +1,10 @@
+{
+  "port": 8787,
+  "recognizedIssuers": ["did:key:z6Mkr4eb4pNsvCF8zQkqwKzeAQFsqEm6Kr3jRyAbkcoMaXKw"],
+  "testContextPath": "/ABSOLUTE/PATH/TO/vc-recognized-entities-test-suite/tests/fixtures/recognized-entities/signed/recognized-entities-test-context.json",
+  "identifierRegistry": "/ABSOLUTE/PATH/TO/vc-recognized-entities-test-suite/tests/fixtures/recognized-entities/signed/identifier-registry.json",
+  "subjectFiles": [
+    "/ABSOLUTE/PATH/TO/vc-recognized-entities-test-suite/tests/fixtures/recognized-entities/signed/known-issuer-credential.json",
+    "/ABSOLUTE/PATH/TO/vc-recognized-entities-test-suite/tests/fixtures/recognized-entities/signed/recognized-entity-credential.json"
+  ]
+}
