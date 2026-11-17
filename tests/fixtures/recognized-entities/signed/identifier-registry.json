@@ -1,0 +1,1267 @@
+{
+  "documents": [
+    {
+      "@context": [
+        "https://www.w3.org/ns/did/v1"
+      ],
+      "id": "did:web:whois.example:issuers:accepted",
+      "verificationMethod": [
+        {
+          "@context": [
+            "https://w3id.org/security/multikey/v1"
+          ],
+          "id": "did:web:whois.example:issuers:accepted#key-1",
+          "type": "Multikey",
+          "controller": "did:web:whois.example:issuers:accepted",
+          "publicKeyMultibase": "z6MkhjhqWHtV3NXtct618Wztj9oyZAM7s94TUJW9EfE3wYnd"
+        }
+      ],
+      "assertionMethod": [
+        "did:web:whois.example:issuers:accepted#key-1"
+      ],
+      "authentication": [
+        "did:web:whois.example:issuers:accepted#key-1"
+      ],
+      "service": [
+        {
+          "id": "did:web:whois.example:issuers:accepted#whois",
+          "type": [
+            "WhoisService",
+            "PathService"
+          ],
+          "serviceEndpoint": "https://whois.example/issuers/accepted/whois.vp"
+        }
+      ]
+    },
+    {
+      "@context": [
+        "https://www.w3.org/ns/did/v1"
+      ],
+      "id": "did:web:whois.example:issuers:unknown-recognizer",
+      "verificationMethod": [
+        {
+          "@context": [
+            "https://w3id.org/security/multikey/v1"
+          ],
+          "id": "did:web:whois.example:issuers:unknown-recognizer#key-1",
+          "type": "Multikey",
+          "controller": "did:web:whois.example:issuers:unknown-recognizer",
+          "publicKeyMultibase": "z6MkoNxWc2wDFLDELJvryWu7bd1xjgDrFcKyKeb1HMeFMSsP"
+        }
+      ],
+      "assertionMethod": [
+        "did:web:whois.example:issuers:unknown-recognizer#key-1"
+      ],
+      "authentication": [
+        "did:web:whois.example:issuers:unknown-recognizer#key-1"
+      ],
+      "service": [
+        {
+          "id": "did:web:whois.example:issuers:unknown-recognizer#whois",
+          "type": [
+            "WhoisService",
+            "PathService"
+          ],
+          "serviceEndpoint": "https://whois.example/issuers/unknown-recognizer/whois.vp"
+        }
+      ]
+    },
+    {
+      "@context": [
+        "https://www.w3.org/ns/did/v1"
+      ],
+      "id": "did:web:whois.example:issuers:whois-only",
+      "verificationMethod": [
+        {
+          "@context": [
+            "https://w3id.org/security/multikey/v1"
+          ],
+          "id": "did:web:whois.example:issuers:whois-only#key-1",
+          "type": "Multikey",
+          "controller": "did:web:whois.example:issuers:whois-only",
+          "publicKeyMultibase": "z6MkevTMeK4p7gjMhk6Dov1nQXXKA1PAKFZm611aBXVurEnv"
+        }
+      ],
+      "assertionMethod": [
+        "did:web:whois.example:issuers:whois-only#key-1"
+      ],
+      "authentication": [
+        "did:web:whois.example:issuers:whois-only#key-1"
+      ],
+      "service": [
+        {
+          "id": "did:web:whois.example:issuers:whois-only#whois",
+          "type": [
+            "WhoisService"
+          ],
+          "serviceEndpoint": "https://whois.example/issuers/whois-only/whois.vp"
+        }
+      ]
+    },
+    {
+      "@context": [
+        "https://www.w3.org/ns/did/v1"
+      ],
+      "id": "did:web:whois.example:issuers:path-only",
+      "verificationMethod": [
+        {
+          "@context": [
+            "https://w3id.org/security/multikey/v1"
+          ],
+          "id": "did:web:whois.example:issuers:path-only#key-1",
+          "type": "Multikey",
+          "controller": "did:web:whois.example:issuers:path-only",
+          "publicKeyMultibase": "z6MkrStFfs3Ebd57cnJdtCsvtTACEY8i7KznkKSDKAy1JDEE"
+        }
+      ],
+      "assertionMethod": [
+        "did:web:whois.example:issuers:path-only#key-1"
+      ],
+      "authentication": [
+        "did:web:whois.example:issuers:path-only#key-1"
+      ],
+      "service": [
+        {
+          "id": "did:web:whois.example:issuers:path-only#whois",
+          "type": [
+            "PathService"
+          ],
+          "serviceEndpoint": "https://whois.example/issuers/path-only/whois.vp"
+        }
+      ]
+    },
+    {
+      "@context": [
+        "https://www.w3.org/ns/did/v1"
+      ],
+      "id": "did:web:whois.example:issuers:unserved",
+      "verificationMethod": [
+        {
+          "@context": [
+            "https://w3id.org/security/multikey/v1"
+          ],
+          "id": "did:web:whois.example:issuers:unserved#key-1",
+          "type": "Multikey",
+          "controller": "did:web:whois.example:issuers:unserved",
+          "publicKeyMultibase": "z6MkmK5L4T7nc8qvXHZnAyFDCGGsi2S8uLnq3rRuf4rUpRUe"
+        }
+      ],
+      "assertionMethod": [
+        "did:web:whois.example:issuers:unserved#key-1"
+      ],
+      "authentication": [
+        "did:web:whois.example:issuers:unserved#key-1"
+      ],
+      "service": [
+        {
+          "id": "did:web:whois.example:issuers:unserved#whois",
+          "type": [
+            "WhoisService",
+            "PathService"
+          ],
+          "serviceEndpoint": "https://whois.example/issuers/unserved/whois.vp"
+        }
+      ]
+    },
+    {
+      "@context": [
+        "https://www.w3.org/ns/did/v1"
+      ],
+      "id": "did:web:whois.example:issuers:loopback",
+      "verificationMethod": [
+        {
+          "@context": [
+            "https://w3id.org/security/multikey/v1"
+          ],
+          "id": "did:web:whois.example:issuers:loopback#key-1",
+          "type": "Multikey",
+          "controller": "did:web:whois.example:issuers:loopback",
+          "publicKeyMultibase": "z6MkfxRUP8TuUeY9B9h7hur25sBkb2jGkSqTtHK3TGCKDi4T"
+        }
+      ],
+      "assertionMethod": [
+        "did:web:whois.example:issuers:loopback#key-1"
+      ],
+      "authentication": [
+        "did:web:whois.example:issuers:loopback#key-1"
+      ],
+      "service": [
+        {
+          "id": "did:web:whois.example:issuers:loopback#whois",
+          "type": [
+            "WhoisService",
+            "PathService"
+          ],
+          "serviceEndpoint": "https://127.0.0.1/issuers/loopback/whois.vp"
+        }
+      ]
+    },
+    {
+      "@context": [
+        "https://www.w3.org/ns/did/v1"
+      ],
+      "id": "did:web:whois.example:issuers:tampered",
+      "verificationMethod": [
+        {
+          "@context": [
+            "https://w3id.org/security/multikey/v1"
+          ],
+          "id": "did:web:whois.example:issuers:tampered#key-1",
+          "type": "Multikey",
+          "controller": "did:web:whois.example:issuers:tampered",
+          "publicKeyMultibase": "z6MkjF86K75y9sdk9YEsqex3rD3kHcs8XnsswSt7CZhZ2ciy"
+        }
+      ],
+      "assertionMethod": [
+        "did:web:whois.example:issuers:tampered#key-1"
+      ],
+      "authentication": [
+        "did:web:whois.example:issuers:tampered#key-1"
+      ],
+      "service": [
+        {
+          "id": "did:web:whois.example:issuers:tampered#whois",
+          "type": [
+            "WhoisService",
+            "PathService"
+          ],
+          "serviceEndpoint": "https://whois.example/issuers/tampered/whois.vp"
+        }
+      ]
+    },
+    {
+      "@context": [
+        "https://www.w3.org/ns/did/v1"
+      ],
+      "id": "did:web:whois.example:issuers:wrong-signer",
+      "verificationMethod": [
+        {
+          "@context": [
+            "https://w3id.org/security/multikey/v1"
+          ],
+          "id": "did:web:whois.example:issuers:wrong-signer#key-1",
+          "type": "Multikey",
+          "controller": "did:web:whois.example:issuers:wrong-signer",
+          "publicKeyMultibase": "z6MksWLBjARZ5rdWYrGSDyLBV7ortq8CPBHZxhW61dxzjYUj"
+        }
+      ],
+      "assertionMethod": [
+        "did:web:whois.example:issuers:wrong-signer#key-1"
+      ],
+      "authentication": [
+        "did:web:whois.example:issuers:wrong-signer#key-1"
+      ],
+      "service": [
+        {
+          "id": "did:web:whois.example:issuers:wrong-signer#whois",
+          "type": [
+            "WhoisService",
+            "PathService"
+          ],
+          "serviceEndpoint": "https://whois.example/issuers/wrong-signer/whois.vp"
+        }
+      ]
+    },
+    {
+      "@context": [
+        "https://www.w3.org/ns/did/v1"
+      ],
+      "id": "did:web:whois.example:issuers:other-entity",
+      "verificationMethod": [
+        {
+          "@context": [
+            "https://w3id.org/security/multikey/v1"
+          ],
+          "id": "did:web:whois.example:issuers:other-entity#key-1",
+          "type": "Multikey",
+          "controller": "did:web:whois.example:issuers:other-entity",
+          "publicKeyMultibase": "z6Mkv6hiKKrSorLzvhToE7J9nSmNJCAwKXobCJcwrkzfjg5a"
+        }
+      ],
+      "assertionMethod": [
+        "did:web:whois.example:issuers:other-entity#key-1"
+      ],
+      "authentication": [
+        "did:web:whois.example:issuers:other-entity#key-1"
+      ],
+      "service": [
+        {
+          "id": "did:web:whois.example:issuers:other-entity#whois",
+          "type": [
+            "WhoisService",
+            "PathService"
+          ],
+          "serviceEndpoint": "https://whois.example/issuers/other-entity/whois.vp"
+        }
+      ]
+    },
+    {
+      "@context": [
+        "https://www.w3.org/ns/did/v1"
+      ],
+      "id": "did:web:whois.example:issuers:two-lists",
+      "verificationMethod": [
+        {
+          "@context": [
+            "https://w3id.org/security/multikey/v1"
+          ],
+          "id": "did:web:whois.example:issuers:two-lists#key-1",
+          "type": "Multikey",
+          "controller": "did:web:whois.example:issuers:two-lists",
+          "publicKeyMultibase": "z6MkewmBrGD1aNojVLZhFig6D3DuA1QMHfzVRabip1QG2KJW"
+        }
+      ],
+      "assertionMethod": [
+        "did:web:whois.example:issuers:two-lists#key-1"
+      ],
+      "authentication": [
+        "did:web:whois.example:issuers:two-lists#key-1"
+      ],
+      "service": [
+        {
+          "id": "did:web:whois.example:issuers:two-lists#whois",
+          "type": [
+            "WhoisService",
+            "PathService"
+          ],
+          "serviceEndpoint": "https://whois.example/issuers/two-lists/whois.vp"
+        }
+      ]
+    },
+    {
+      "@context": [
+        "https://www.w3.org/ns/did/v1"
+      ],
+      "id": "did:web:whois.example:issuers:via-intermediate",
+      "verificationMethod": [
+        {
+          "@context": [
+            "https://w3id.org/security/multikey/v1"
+          ],
+          "id": "did:web:whois.example:issuers:via-intermediate#key-1",
+          "type": "Multikey",
+          "controller": "did:web:whois.example:issuers:via-intermediate",
+          "publicKeyMultibase": "z6Mkuw8gGwLPoCeTthDFhdv1LZHBrCfcDeZsZGybjmftw6K3"
+        }
+      ],
+      "assertionMethod": [
+        "did:web:whois.example:issuers:via-intermediate#key-1"
+      ],
+      "authentication": [
+        "did:web:whois.example:issuers:via-intermediate#key-1"
+      ],
+      "service": [
+        {
+          "id": "did:web:whois.example:issuers:via-intermediate#whois",
+          "type": [
+            "WhoisService",
+            "PathService"
+          ],
+          "serviceEndpoint": "https://whois.example/issuers/via-intermediate/whois.vp"
+        }
+      ]
+    },
+    {
+      "@context": [
+        "https://www.w3.org/ns/did/v1"
+      ],
+      "id": "did:web:whois.example:issuers:intermediate-no-recognized-in",
+      "verificationMethod": [
+        {
+          "@context": [
+            "https://w3id.org/security/multikey/v1"
+          ],
+          "id": "did:web:whois.example:issuers:intermediate-no-recognized-in#key-1",
+          "type": "Multikey",
+          "controller": "did:web:whois.example:issuers:intermediate-no-recognized-in",
+          "publicKeyMultibase": "z6MkkJwHpsqEN7GscwnV65UQoTcxXUjeN14W5pT8cCWVB1gL"
+        }
+      ],
+      "assertionMethod": [
+        "did:web:whois.example:issuers:intermediate-no-recognized-in#key-1"
+      ],
+      "authentication": [
+        "did:web:whois.example:issuers:intermediate-no-recognized-in#key-1"
+      ],
+      "service": [
+        {
+          "id": "did:web:whois.example:issuers:intermediate-no-recognized-in#whois",
+          "type": [
+            "WhoisService",
+            "PathService"
+          ],
+          "serviceEndpoint": "https://whois.example/issuers/intermediate-no-recognized-in/whois.vp"
+        }
+      ]
+    }
+  ],
+  "endpoints": {
+    "https://whois.example/issuers/accepted/whois.vp": {
+      "@context": [
+        "https://www.w3.org/ns/credentials/v2",
+        "https://w3id.org/security/data-integrity/v2"
+      ],
+      "id": "urn:example:whois:accepted",
+      "type": [
+        "VerifiablePresentation"
+      ],
+      "holder": "did:web:whois.example:issuers:accepted",
+      "verifiableCredential": [
+        {
+          "@context": [
+            "https://www.w3.org/ns/credentials/v2",
+            "https://w3id.org/security/data-integrity/v2",
+            "https://anchor.example/contexts/recognized-entities-test/v1"
+          ],
+          "id": "https://anchor.example/lists/whois-anchor.json",
+          "type": [
+            "VerifiableCredential",
+            "RecognizedEntityCredential"
+          ],
+          "issuer": {
+            "id": "did:key:z6Mkr4eb4pNsvCF8zQkqwKzeAQFsqEm6Kr3jRyAbkcoMaXKw",
+            "type": "RecognizedIssuer"
+          },
+          "validFrom": "2025-01-01T00:00:00Z",
+          "credentialSubject": [
+            {
+              "id": "did:web:whois.example:issuers:accepted",
+              "type": "RecognizedEntity",
+              "name": "Chain entity",
+              "recognizedTo": {
+                "type": "RecognizedAction",
+                "action": "issue",
+                "recognizedBy": "did:key:z6Mkr4eb4pNsvCF8zQkqwKzeAQFsqEm6Kr3jRyAbkcoMaXKw",
+                "credentialValidator": [
+                  {
+                    "type": "CredentialValidator",
+                    "id": "data:application/schema+json,%7B%22type%22%3A%22object%22%2C%22required%22%3A%5B%22credentialSubject%22%5D%7D",
+                    "mediaType": "application/schema+json"
+                  }
+                ]
+              }
+            }
+          ],
+          "proof": {
+            "type": "DataIntegrityProof",
+            "created": "2026-11-17T22:46:59Z",
+            "verificationMethod": "did:key:z6Mkr4eb4pNsvCF8zQkqwKzeAQFsqEm6Kr3jRyAbkcoMaXKw#z6Mkr4eb4pNsvCF8zQkqwKzeAQFsqEm6Kr3jRyAbkcoMaXKw",
+            "cryptosuite": "eddsa-jcs-2022",
+            "proofPurpose": "assertionMethod",
+            "@context": [
+              "https://www.w3.org/ns/credentials/v2",
+              "https://w3id.org/security/data-integrity/v2",
+              "https://anchor.example/contexts/recognized-entities-test/v1"
+            ],
+            "proofValue": "z5yFUYCoYGCkBTocCmVVRjY5vcveP9jexJG72yvxPnsc53foLSuR7mT2u99nZSoKLVvnpE5d7WHDSESBxD4nXUJan"
+          }
+        }
+      ],
+      "proof": {
+        "type": "DataIntegrityProof",
+        "created": "2026-11-17T22:46:59Z",
+        "verificationMethod": "did:web:whois.example:issuers:accepted#key-1",
+        "cryptosuite": "eddsa-jcs-2022",
+        "proofPurpose": "authentication",
+        "@context": [
+          "https://www.w3.org/ns/credentials/v2",
+          "https://w3id.org/security/data-integrity/v2"
+        ],
+        "proofValue": "z3q68C5ztaBMt4qoqXZQim1cuQ2kWzWsP8X4JerkvK2Vm6ZvW341aMqisTMknXAjshQ1hznxEVbXupnfCBJSsT5G4"
+      }
+    },
+    "https://whois.example/issuers/unknown-recognizer/whois.vp": {
+      "@context": [
+        "https://www.w3.org/ns/credentials/v2",
+        "https://w3id.org/security/data-integrity/v2"
+      ],
+      "id": "urn:example:whois:unknown-recognizer",
+      "type": [
+        "VerifiablePresentation"
+      ],
+      "holder": "did:web:whois.example:issuers:unknown-recognizer",
+      "verifiableCredential": [
+        {
+          "@context": [
+            "https://www.w3.org/ns/credentials/v2",
+            "https://w3id.org/security/data-integrity/v2",
+            "https://anchor.example/contexts/recognized-entities-test/v1"
+          ],
+          "id": "https://anchor.example/lists/whois-unknown-recognizer.json",
+          "type": [
+            "VerifiableCredential",
+            "RecognizedEntityCredential"
+          ],
+          "issuer": {
+            "id": "did:key:z6MkptAj28AiEPR32puL44AwVJEWRpLXQeBHu4ECu48DVZR6",
+            "type": "RecognizedIssuer"
+          },
+          "validFrom": "2025-01-01T00:00:00Z",
+          "credentialSubject": [
+            {
+              "id": "did:web:whois.example:issuers:unknown-recognizer",
+              "type": "RecognizedEntity",
+              "name": "Chain entity",
+              "recognizedTo": {
+                "type": "RecognizedAction",
+                "action": "issue",
+                "recognizedBy": "did:key:z6MkptAj28AiEPR32puL44AwVJEWRpLXQeBHu4ECu48DVZR6",
+                "credentialValidator": [
+                  {
+                    "type": "CredentialValidator",
+                    "id": "data:application/schema+json,%7B%22type%22%3A%22object%22%2C%22required%22%3A%5B%22credentialSubject%22%5D%7D",
+                    "mediaType": "application/schema+json"
+                  }
+                ]
+              }
+            }
+          ],
+          "proof": {
+            "type": "DataIntegrityProof",
+            "created": "2026-11-17T22:46:59Z",
+            "verificationMethod": "did:key:z6MkptAj28AiEPR32puL44AwVJEWRpLXQeBHu4ECu48DVZR6#z6MkptAj28AiEPR32puL44AwVJEWRpLXQeBHu4ECu48DVZR6",
+            "cryptosuite": "eddsa-jcs-2022",
+            "proofPurpose": "assertionMethod",
+            "@context": [
+              "https://www.w3.org/ns/credentials/v2",
+              "https://w3id.org/security/data-integrity/v2",
+              "https://anchor.example/contexts/recognized-entities-test/v1"
+            ],
+            "proofValue": "zHhmLt6CSLcA4bQF3H6RDTyfxD14Wf7yfAR1ZQQUMK6i1HSnnDunxHiqrKXLaQiqVDmEfk6BHDyJEvMdnfeDDUVV"
+          }
+        }
+      ],
+      "proof": {
+        "type": "DataIntegrityProof",
+        "created": "2026-11-17T22:46:59Z",
+        "verificationMethod": "did:web:whois.example:issuers:unknown-recognizer#key-1",
+        "cryptosuite": "eddsa-jcs-2022",
+        "proofPurpose": "authentication",
+        "@context": [
+          "https://www.w3.org/ns/credentials/v2",
+          "https://w3id.org/security/data-integrity/v2"
+        ],
+        "proofValue": "z616FVygvVD6d9MYLzYPo4vsEoPKg18BHBcGzWGfWQuMMYakYeRw6C8osgxvz4dFmd2yzB9iJs8FNUBxnujaDSW1n"
+      }
+    },
+    "https://whois.example/issuers/whois-only/whois.vp": {
+      "@context": [
+        "https://www.w3.org/ns/credentials/v2",
+        "https://w3id.org/security/data-integrity/v2"
+      ],
+      "id": "urn:example:whois:whois-only",
+      "type": [
+        "VerifiablePresentation"
+      ],
+      "holder": "did:web:whois.example:issuers:whois-only",
+      "verifiableCredential": [
+        {
+          "@context": [
+            "https://www.w3.org/ns/credentials/v2",
+            "https://w3id.org/security/data-integrity/v2",
+            "https://anchor.example/contexts/recognized-entities-test/v1"
+          ],
+          "id": "https://anchor.example/lists/whois-anchor.json",
+          "type": [
+            "VerifiableCredential",
+            "RecognizedEntityCredential"
+          ],
+          "issuer": {
+            "id": "did:key:z6Mkr4eb4pNsvCF8zQkqwKzeAQFsqEm6Kr3jRyAbkcoMaXKw",
+            "type": "RecognizedIssuer"
+          },
+          "validFrom": "2025-01-01T00:00:00Z",
+          "credentialSubject": [
+            {
+              "id": "did:web:whois.example:issuers:whois-only",
+              "type": "RecognizedEntity",
+              "name": "Chain entity",
+              "recognizedTo": {
+                "type": "RecognizedAction",
+                "action": "issue",
+                "recognizedBy": "did:key:z6Mkr4eb4pNsvCF8zQkqwKzeAQFsqEm6Kr3jRyAbkcoMaXKw",
+                "credentialValidator": [
+                  {
+                    "type": "CredentialValidator",
+                    "id": "data:application/schema+json,%7B%22type%22%3A%22object%22%2C%22required%22%3A%5B%22credentialSubject%22%5D%7D",
+                    "mediaType": "application/schema+json"
+                  }
+                ]
+              }
+            }
+          ],
+          "proof": {
+            "type": "DataIntegrityProof",
+            "created": "2026-11-17T22:46:59Z",
+            "verificationMethod": "did:key:z6Mkr4eb4pNsvCF8zQkqwKzeAQFsqEm6Kr3jRyAbkcoMaXKw#z6Mkr4eb4pNsvCF8zQkqwKzeAQFsqEm6Kr3jRyAbkcoMaXKw",
+            "cryptosuite": "eddsa-jcs-2022",
+            "proofPurpose": "assertionMethod",
+            "@context": [
+              "https://www.w3.org/ns/credentials/v2",
+              "https://w3id.org/security/data-integrity/v2",
+              "https://anchor.example/contexts/recognized-entities-test/v1"
+            ],
+            "proofValue": "z5wqQTe42dirmc7njbNjfv9USoJKTazU1zsD5bEQx1AnqDa1PCDXrZPwvZQPRgVLMNyUKS9g5SQ7JJX6Q88Ud4xGL"
+          }
+        }
+      ],
+      "proof": {
+        "type": "DataIntegrityProof",
+        "created": "2026-11-17T22:46:59Z",
+        "verificationMethod": "did:web:whois.example:issuers:whois-only#key-1",
+        "cryptosuite": "eddsa-jcs-2022",
+        "proofPurpose": "authentication",
+        "@context": [
+          "https://www.w3.org/ns/credentials/v2",
+          "https://w3id.org/security/data-integrity/v2"
+        ],
+        "proofValue": "z23ZyjLTVURLohCLqLnwiaoLvRdCCBGnamp5KrVnKikEDXK8K9GLiSJ5g3hJAx8hdZS2qS4GNeAKc37m7od5RUXop"
+      }
+    },
+    "https://whois.example/issuers/path-only/whois.vp": {
+      "@context": [
+        "https://www.w3.org/ns/credentials/v2",
+        "https://w3id.org/security/data-integrity/v2"
+      ],
+      "id": "urn:example:whois:path-only",
+      "type": [
+        "VerifiablePresentation"
+      ],
+      "holder": "did:web:whois.example:issuers:path-only",
+      "verifiableCredential": [
+        {
+          "@context": [
+            "https://www.w3.org/ns/credentials/v2",
+            "https://w3id.org/security/data-integrity/v2",
+            "https://anchor.example/contexts/recognized-entities-test/v1"
+          ],
+          "id": "https://anchor.example/lists/whois-anchor.json",
+          "type": [
+            "VerifiableCredential",
+            "RecognizedEntityCredential"
+          ],
+          "issuer": {
+            "id": "did:key:z6Mkr4eb4pNsvCF8zQkqwKzeAQFsqEm6Kr3jRyAbkcoMaXKw",
+            "type": "RecognizedIssuer"
+          },
+          "validFrom": "2025-01-01T00:00:00Z",
+          "credentialSubject": [
+            {
+              "id": "did:web:whois.example:issuers:path-only",
+              "type": "RecognizedEntity",
+              "name": "Chain entity",
+              "recognizedTo": {
+                "type": "RecognizedAction",
+                "action": "issue",
+                "recognizedBy": "did:key:z6Mkr4eb4pNsvCF8zQkqwKzeAQFsqEm6Kr3jRyAbkcoMaXKw",
+                "credentialValidator": [
+                  {
+                    "type": "CredentialValidator",
+                    "id": "data:application/schema+json,%7B%22type%22%3A%22object%22%2C%22required%22%3A%5B%22credentialSubject%22%5D%7D",
+                    "mediaType": "application/schema+json"
+                  }
+                ]
+              }
+            }
+          ],
+          "proof": {
+            "type": "DataIntegrityProof",
+            "created": "2026-11-17T22:46:59Z",
+            "verificationMethod": "did:key:z6Mkr4eb4pNsvCF8zQkqwKzeAQFsqEm6Kr3jRyAbkcoMaXKw#z6Mkr4eb4pNsvCF8zQkqwKzeAQFsqEm6Kr3jRyAbkcoMaXKw",
+            "cryptosuite": "eddsa-jcs-2022",
+            "proofPurpose": "assertionMethod",
+            "@context": [
+              "https://www.w3.org/ns/credentials/v2",
+              "https://w3id.org/security/data-integrity/v2",
+              "https://anchor.example/contexts/recognized-entities-test/v1"
+            ],
+            "proofValue": "z2mpVAixLZ56qzoJsowGBrqhJE46KKect3ncuzWqK1uDrZ6DAuMhsEX2KkUnLheR1vfXpqqkuhEvap7ZYCzeNGJ5q"
+          }
+        }
+      ],
+      "proof": {
+        "type": "DataIntegrityProof",
+        "created": "2026-11-17T22:46:59Z",
+        "verificationMethod": "did:web:whois.example:issuers:path-only#key-1",
+        "cryptosuite": "eddsa-jcs-2022",
+        "proofPurpose": "authentication",
+        "@context": [
+          "https://www.w3.org/ns/credentials/v2",
+          "https://w3id.org/security/data-integrity/v2"
+        ],
+        "proofValue": "z59ujjYqN4ryvivm9QfUThHt3qUjcmVydEL9bnTxE2MSErSHRYXVr2r9ZmKFtL1Lb3vZBKptCQ89cxPCopVPLt1xk"
+      }
+    },
+    "https://127.0.0.1/issuers/loopback/whois.vp": {
+      "@context": [
+        "https://www.w3.org/ns/credentials/v2",
+        "https://w3id.org/security/data-integrity/v2"
+      ],
+      "id": "urn:example:whois:loopback",
+      "type": [
+        "VerifiablePresentation"
+      ],
+      "holder": "did:web:whois.example:issuers:loopback",
+      "verifiableCredential": [
+        {
+          "@context": [
+            "https://www.w3.org/ns/credentials/v2",
+            "https://w3id.org/security/data-integrity/v2",
+            "https://anchor.example/contexts/recognized-entities-test/v1"
+          ],
+          "id": "https://anchor.example/lists/whois-anchor.json",
+          "type": [
+            "VerifiableCredential",
+            "RecognizedEntityCredential"
+          ],
+          "issuer": {
+            "id": "did:key:z6Mkr4eb4pNsvCF8zQkqwKzeAQFsqEm6Kr3jRyAbkcoMaXKw",
+            "type": "RecognizedIssuer"
+          },
+          "validFrom": "2025-01-01T00:00:00Z",
+          "credentialSubject": [
+            {
+              "id": "did:web:whois.example:issuers:loopback",
+              "type": "RecognizedEntity",
+              "name": "Chain entity",
+              "recognizedTo": {
+                "type": "RecognizedAction",
+                "action": "issue",
+                "recognizedBy": "did:key:z6Mkr4eb4pNsvCF8zQkqwKzeAQFsqEm6Kr3jRyAbkcoMaXKw",
+                "credentialValidator": [
+                  {
+                    "type": "CredentialValidator",
+                    "id": "data:application/schema+json,%7B%22type%22%3A%22object%22%2C%22required%22%3A%5B%22credentialSubject%22%5D%7D",
+                    "mediaType": "application/schema+json"
+                  }
+                ]
+              }
+            }
+          ],
+          "proof": {
+            "type": "DataIntegrityProof",
+            "created": "2026-11-17T22:46:59Z",
+            "verificationMethod": "did:key:z6Mkr4eb4pNsvCF8zQkqwKzeAQFsqEm6Kr3jRyAbkcoMaXKw#z6Mkr4eb4pNsvCF8zQkqwKzeAQFsqEm6Kr3jRyAbkcoMaXKw",
+            "cryptosuite": "eddsa-jcs-2022",
+            "proofPurpose": "assertionMethod",
+            "@context": [
+              "https://www.w3.org/ns/credentials/v2",
+              "https://w3id.org/security/data-integrity/v2",
+              "https://anchor.example/contexts/recognized-entities-test/v1"
+            ],
+            "proofValue": "z2PpXDbRoxg6U7sx5iPd3hRyF6zscRYZyxMSdY5KHGwkUbWwmH7S25bqsdpzE2Y3xpRTwR6UWznAFG8WiS6EdWMW5"
+          }
+        }
+      ],
+      "proof": {
+        "type": "DataIntegrityProof",
+        "created": "2026-11-17T22:46:59Z",
+        "verificationMethod": "did:web:whois.example:issuers:loopback#key-1",
+        "cryptosuite": "eddsa-jcs-2022",
+        "proofPurpose": "authentication",
+        "@context": [
+          "https://www.w3.org/ns/credentials/v2",
+          "https://w3id.org/security/data-integrity/v2"
+        ],
+        "proofValue": "z3q14jbx9g9ytVcdehyX2miGaRzhsgSg2L9JG3Y7uLvMcMc9NqwTx5HXDvznHtdo6F4YnHnQ3A1x95ptTHdYYEdH3"
+      }
+    },
+    "https://whois.example/issuers/tampered/whois.vp": {
+      "@context": [
+        "https://www.w3.org/ns/credentials/v2",
+        "https://w3id.org/security/data-integrity/v2"
+      ],
+      "id": "urn:example:whois:tampered:changed",
+      "type": [
+        "VerifiablePresentation"
+      ],
+      "holder": "did:web:whois.example:issuers:tampered",
+      "verifiableCredential": [
+        {
+          "@context": [
+            "https://www.w3.org/ns/credentials/v2",
+            "https://w3id.org/security/data-integrity/v2",
+            "https://anchor.example/contexts/recognized-entities-test/v1"
+          ],
+          "id": "https://anchor.example/lists/whois-anchor.json",
+          "type": [
+            "VerifiableCredential",
+            "RecognizedEntityCredential"
+          ],
+          "issuer": {
+            "id": "did:key:z6Mkr4eb4pNsvCF8zQkqwKzeAQFsqEm6Kr3jRyAbkcoMaXKw",
+            "type": "RecognizedIssuer"
+          },
+          "validFrom": "2025-01-01T00:00:00Z",
+          "credentialSubject": [
+            {
+              "id": "did:web:whois.example:issuers:tampered",
+              "type": "RecognizedEntity",
+              "name": "Chain entity",
+              "recognizedTo": {
+                "type": "RecognizedAction",
+                "action": "issue",
+                "recognizedBy": "did:key:z6Mkr4eb4pNsvCF8zQkqwKzeAQFsqEm6Kr3jRyAbkcoMaXKw",
+                "credentialValidator": [
+                  {
+                    "type": "CredentialValidator",
+                    "id": "data:application/schema+json,%7B%22type%22%3A%22object%22%2C%22required%22%3A%5B%22credentialSubject%22%5D%7D",
+                    "mediaType": "application/schema+json"
+                  }
+                ]
+              }
+            }
+          ],
+          "proof": {
+            "type": "DataIntegrityProof",
+            "created": "2026-11-17T22:46:59Z",
+            "verificationMethod": "did:key:z6Mkr4eb4pNsvCF8zQkqwKzeAQFsqEm6Kr3jRyAbkcoMaXKw#z6Mkr4eb4pNsvCF8zQkqwKzeAQFsqEm6Kr3jRyAbkcoMaXKw",
+            "cryptosuite": "eddsa-jcs-2022",
+            "proofPurpose": "assertionMethod",
+            "@context": [
+              "https://www.w3.org/ns/credentials/v2",
+              "https://w3id.org/security/data-integrity/v2",
+              "https://anchor.example/contexts/recognized-entities-test/v1"
+            ],
+            "proofValue": "zs1kz3ALSWM5jagj1cRLG78Ufwdu1CtDcyrdc2tY1X5THnUbx6dbBaEQaC655CnLgo52JbL2aU3c8hPHVYeNMRBG"
+          }
+        }
+      ],
+      "proof": {
+        "type": "DataIntegrityProof",
+        "created": "2026-11-17T22:46:59Z",
+        "verificationMethod": "did:web:whois.example:issuers:tampered#key-1",
+        "cryptosuite": "eddsa-jcs-2022",
+        "proofPurpose": "authentication",
+        "@context": [
+          "https://www.w3.org/ns/credentials/v2",
+          "https://w3id.org/security/data-integrity/v2"
+        ],
+        "proofValue": "z264QoiPqdDhzzdmFB5HsCRfe5aviJcuFGKuRTjwX7P2Lct1K3hy5fFmWA4ay8U8ZGhAup6GxMWi2xnzN6WTqAUuK"
+      }
+    },
+    "https://whois.example/issuers/wrong-signer/whois.vp": {
+      "@context": [
+        "https://www.w3.org/ns/credentials/v2",
+        "https://w3id.org/security/data-integrity/v2"
+      ],
+      "id": "urn:example:whois:wrong-signer",
+      "type": [
+        "VerifiablePresentation"
+      ],
+      "holder": "did:web:whois.example:issuers:wrong-signer",
+      "verifiableCredential": [
+        {
+          "@context": [
+            "https://www.w3.org/ns/credentials/v2",
+            "https://w3id.org/security/data-integrity/v2",
+            "https://anchor.example/contexts/recognized-entities-test/v1"
+          ],
+          "id": "https://anchor.example/lists/whois-anchor.json",
+          "type": [
+            "VerifiableCredential",
+            "RecognizedEntityCredential"
+          ],
+          "issuer": {
+            "id": "did:key:z6Mkr4eb4pNsvCF8zQkqwKzeAQFsqEm6Kr3jRyAbkcoMaXKw",
+            "type": "RecognizedIssuer"
+          },
+          "validFrom": "2025-01-01T00:00:00Z",
+          "credentialSubject": [
+            {
+              "id": "did:web:whois.example:issuers:wrong-signer",
+              "type": "RecognizedEntity",
+              "name": "Chain entity",
+              "recognizedTo": {
+                "type": "RecognizedAction",
+                "action": "issue",
+                "recognizedBy": "did:key:z6Mkr4eb4pNsvCF8zQkqwKzeAQFsqEm6Kr3jRyAbkcoMaXKw",
+                "credentialValidator": [
+                  {
+                    "type": "CredentialValidator",
+                    "id": "data:application/schema+json,%7B%22type%22%3A%22object%22%2C%22required%22%3A%5B%22credentialSubject%22%5D%7D",
+                    "mediaType": "application/schema+json"
+                  }
+                ]
+              }
+            }
+          ],
+          "proof": {
+            "type": "DataIntegrityProof",
+            "created": "2026-11-17T22:46:59Z",
+            "verificationMethod": "did:key:z6Mkr4eb4pNsvCF8zQkqwKzeAQFsqEm6Kr3jRyAbkcoMaXKw#z6Mkr4eb4pNsvCF8zQkqwKzeAQFsqEm6Kr3jRyAbkcoMaXKw",
+            "cryptosuite": "eddsa-jcs-2022",
+            "proofPurpose": "assertionMethod",
+            "@context": [
+              "https://www.w3.org/ns/credentials/v2",
+              "https://w3id.org/security/data-integrity/v2",
+              "https://anchor.example/contexts/recognized-entities-test/v1"
+            ],
+            "proofValue": "z5fE7LVX84D8XoPxNbvAEa4u21u9EHyA7aT6e7pidyeP7U9fse9CZREGsfgBBgFHhqCudNGuTmRDSgDRaWd2XKn9G"
+          }
+        }
+      ],
+      "proof": {
+        "type": "DataIntegrityProof",
+        "created": "2026-11-17T22:46:59Z",
+        "verificationMethod": "did:web:whois.example:issuers:accepted#key-1",
+        "cryptosuite": "eddsa-jcs-2022",
+        "proofPurpose": "authentication",
+        "@context": [
+          "https://www.w3.org/ns/credentials/v2",
+          "https://w3id.org/security/data-integrity/v2"
+        ],
+        "proofValue": "z5ZHTQrmfpXCMBEUMMhuww25CGkUum89Vz7Bo9QMgemuNvQqwbJ7mCEQMadkKLk24DNKNztBrprsHF5PXkWUFrZj"
+      }
+    },
+    "https://whois.example/issuers/other-entity/whois.vp": {
+      "@context": [
+        "https://www.w3.org/ns/credentials/v2",
+        "https://w3id.org/security/data-integrity/v2"
+      ],
+      "id": "urn:example:whois:other-entity",
+      "type": [
+        "VerifiablePresentation"
+      ],
+      "holder": "did:web:whois.example:issuers:other-entity",
+      "verifiableCredential": [
+        {
+          "@context": [
+            "https://www.w3.org/ns/credentials/v2",
+            "https://w3id.org/security/data-integrity/v2",
+            "https://anchor.example/contexts/recognized-entities-test/v1"
+          ],
+          "id": "https://anchor.example/lists/whois-anchor.json",
+          "type": [
+            "VerifiableCredential",
+            "RecognizedEntityCredential"
+          ],
+          "issuer": {
+            "id": "did:key:z6Mkr4eb4pNsvCF8zQkqwKzeAQFsqEm6Kr3jRyAbkcoMaXKw",
+            "type": "RecognizedIssuer"
+          },
+          "validFrom": "2025-01-01T00:00:00Z",
+          "credentialSubject": [
+            {
+              "id": "did:web:whois.example:issuers:someone-else",
+              "type": "RecognizedEntity",
+              "name": "Chain entity",
+              "recognizedTo": {
+                "type": "RecognizedAction",
+                "action": "issue",
+                "recognizedBy": "did:key:z6Mkr4eb4pNsvCF8zQkqwKzeAQFsqEm6Kr3jRyAbkcoMaXKw",
+                "credentialValidator": [
+                  {
+                    "type": "CredentialValidator",
+                    "id": "data:application/schema+json,%7B%22type%22%3A%22object%22%2C%22required%22%3A%5B%22credentialSubject%22%5D%7D",
+                    "mediaType": "application/schema+json"
+                  }
+                ]
+              }
+            }
+          ],
+          "proof": {
+            "type": "DataIntegrityProof",
+            "created": "2026-11-17T22:46:59Z",
+            "verificationMethod": "did:key:z6Mkr4eb4pNsvCF8zQkqwKzeAQFsqEm6Kr3jRyAbkcoMaXKw#z6Mkr4eb4pNsvCF8zQkqwKzeAQFsqEm6Kr3jRyAbkcoMaXKw",
+            "cryptosuite": "eddsa-jcs-2022",
+            "proofPurpose": "assertionMethod",
+            "@context": [
+              "https://www.w3.org/ns/credentials/v2",
+              "https://w3id.org/security/data-integrity/v2",
+              "https://anchor.example/contexts/recognized-entities-test/v1"
+            ],
+            "proofValue": "z2px8BQ1vkiiTPL4wvgQ3aW7pxKCDyGJTNheqJanph28dAx9yC65ezBdJSkmFMXsnE78AFnesB9NrjewTPKj2BRhq"
+          }
+        }
+      ],
+      "proof": {
+        "type": "DataIntegrityProof",
+        "created": "2026-11-17T22:46:59Z",
+        "verificationMethod": "did:web:whois.example:issuers:other-entity#key-1",
+        "cryptosuite": "eddsa-jcs-2022",
+        "proofPurpose": "authentication",
+        "@context": [
+          "https://www.w3.org/ns/credentials/v2",
+          "https://w3id.org/security/data-integrity/v2"
+        ],
+        "proofValue": "z3iAbs1765N7oN5oF8kLN64gQPuX2zyY1scaxFYezYwWVpvnLDgbMHNnmLTN8dbBEZ4jtK4U8USKpQLXGYB4NqiaX"
+      }
+    },
+    "https://whois.example/issuers/two-lists/whois.vp": {
+      "@context": [
+        "https://www.w3.org/ns/credentials/v2",
+        "https://w3id.org/security/data-integrity/v2"
+      ],
+      "id": "urn:example:whois:two-lists",
+      "type": [
+        "VerifiablePresentation"
+      ],
+      "holder": "did:web:whois.example:issuers:two-lists",
+      "verifiableCredential": [
+        {
+          "@context": [
+            "https://www.w3.org/ns/credentials/v2",
+            "https://w3id.org/security/data-integrity/v2",
+            "https://anchor.example/contexts/recognized-entities-test/v1"
+          ],
+          "id": "https://anchor.example/lists/whois-unknown-recognizer.json",
+          "type": [
+            "VerifiableCredential",
+            "RecognizedEntityCredential"
+          ],
+          "issuer": {
+            "id": "did:key:z6MkptAj28AiEPR32puL44AwVJEWRpLXQeBHu4ECu48DVZR6",
+            "type": "RecognizedIssuer"
+          },
+          "validFrom": "2025-01-01T00:00:00Z",
+          "credentialSubject": [
+            {
+              "id": "did:web:whois.example:issuers:two-lists",
+              "type": "RecognizedEntity",
+              "name": "Chain entity",
+              "recognizedTo": {
+                "type": "RecognizedAction",
+                "action": "issue",
+                "recognizedBy": "did:key:z6MkptAj28AiEPR32puL44AwVJEWRpLXQeBHu4ECu48DVZR6",
+                "credentialValidator": [
+                  {
+                    "type": "CredentialValidator",
+                    "id": "data:application/schema+json,%7B%22type%22%3A%22object%22%2C%22required%22%3A%5B%22credentialSubject%22%5D%7D",
+                    "mediaType": "application/schema+json"
+                  }
+                ]
+              }
+            }
+          ],
+          "proof": {
+            "type": "DataIntegrityProof",
+            "created": "2026-11-17T22:46:59Z",
+            "verificationMethod": "did:key:z6MkptAj28AiEPR32puL44AwVJEWRpLXQeBHu4ECu48DVZR6#z6MkptAj28AiEPR32puL44AwVJEWRpLXQeBHu4ECu48DVZR6",
+            "cryptosuite": "eddsa-jcs-2022",
+            "proofPurpose": "assertionMethod",
+            "@context": [
+              "https://www.w3.org/ns/credentials/v2",
+              "https://w3id.org/security/data-integrity/v2",
+              "https://anchor.example/contexts/recognized-entities-test/v1"
+            ],
+            "proofValue": "z4KrXJLjbju8jaArAZdCYstt3LcnVktiGSbEE24GV1CMGVjMA3m5wNKk93qY6e9QbFBu3T22g9LJZPS18Mmcarh8z"
+          }
+        },
+        {
+          "@context": [
+            "https://www.w3.org/ns/credentials/v2",
+            "https://w3id.org/security/data-integrity/v2",
+            "https://anchor.example/contexts/recognized-entities-test/v1"
+          ],
+          "id": "https://anchor.example/lists/whois-anchor.json",
+          "type": [
+            "VerifiableCredential",
+            "RecognizedEntityCredential"
+          ],
+          "issuer": {
+            "id": "did:key:z6Mkr4eb4pNsvCF8zQkqwKzeAQFsqEm6Kr3jRyAbkcoMaXKw",
+            "type": "RecognizedIssuer"
+          },
+          "validFrom": "2025-01-01T00:00:00Z",
+          "credentialSubject": [
+            {
+              "id": "did:web:whois.example:issuers:two-lists",
+              "type": "RecognizedEntity",
+              "name": "Chain entity",
+              "recognizedTo": {
+                "type": "RecognizedAction",
+                "action": "issue",
+                "recognizedBy": "did:key:z6Mkr4eb4pNsvCF8zQkqwKzeAQFsqEm6Kr3jRyAbkcoMaXKw",
+                "credentialValidator": [
+                  {
+                    "type": "CredentialValidator",
+                    "id": "data:application/schema+json,%7B%22type%22%3A%22object%22%2C%22required%22%3A%5B%22credentialSubject%22%5D%7D",
+                    "mediaType": "application/schema+json"
+                  }
+                ]
+              }
+            }
+          ],
+          "proof": {
+            "type": "DataIntegrityProof",
+            "created": "2026-11-17T22:46:59Z",
+            "verificationMethod": "did:key:z6Mkr4eb4pNsvCF8zQkqwKzeAQFsqEm6Kr3jRyAbkcoMaXKw#z6Mkr4eb4pNsvCF8zQkqwKzeAQFsqEm6Kr3jRyAbkcoMaXKw",
+            "cryptosuite": "eddsa-jcs-2022",
+            "proofPurpose": "assertionMethod",
+            "@context": [
+              "https://www.w3.org/ns/credentials/v2",
+              "https://w3id.org/security/data-integrity/v2",
+              "https://anchor.example/contexts/recognized-entities-test/v1"
+            ],
+            "proofValue": "z3GEzZ2e6wvtcFsauKW8AA9ta4WBGKpv12y4bg4uGxPueN5mw7a4pTLsDSddD3S2om3U4egArGMGBQiMPvXeFmgWR"
+          }
+        }
+      ],
+      "proof": {
+        "type": "DataIntegrityProof",
+        "created": "2026-11-17T22:46:59Z",
+        "verificationMethod": "did:web:whois.example:issuers:two-lists#key-1",
+        "cryptosuite": "eddsa-jcs-2022",
+        "proofPurpose": "authentication",
+        "@context": [
+          "https://www.w3.org/ns/credentials/v2",
+          "https://w3id.org/security/data-integrity/v2"
+        ],
+        "proofValue": "z64T1pLUTSUjJX73r5WS5iviPPbtD6kGdbejPu2AsiQe54fJ8yGwgfMa1hGmQqU3dgtqejqmw1bUpPo9zVXGEdGt8"
+      }
+    },
+    "https://whois.example/issuers/via-intermediate/whois.vp": {
+      "@context": [
+        "https://www.w3.org/ns/credentials/v2",
+        "https://w3id.org/security/data-integrity/v2"
+      ],
+      "id": "urn:example:whois:via-intermediate",
+      "type": [
+        "VerifiablePresentation"
+      ],
+      "holder": "did:web:whois.example:issuers:via-intermediate",
+      "verifiableCredential": [
+        {
+          "@context": [
+            "https://www.w3.org/ns/credentials/v2",
+            "https://w3id.org/security/data-integrity/v2",
+            "https://anchor.example/contexts/recognized-entities-test/v1"
+          ],
+          "id": "https://anchor.example/lists/whois-intermediate.json",
+          "type": [
+            "VerifiableCredential",
+            "RecognizedEntityCredential"
+          ],
+          "issuer": {
+            "id": "did:key:z6MkqiuHv7CuN7mXv21ioEdiVvSFwkPKLrJTqbSKZ5ftdbwj",
+            "type": "RecognizedIssuer",
+            "recognizedIn": {
+              "id": "https://anchor.example/lists/whois-intermediate.json",
+              "type": "RecognizedEntityCredential"
+            }
+          },
+          "validFrom": "2025-01-01T00:00:00Z",
+          "credentialSubject": [
+            {
+              "id": "did:web:whois.example:issuers:via-intermediate",
+              "type": "RecognizedEntity",
+              "name": "Chain entity",
+              "recognizedTo": {
+                "type": "RecognizedAction",
+                "action": "issue",
+                "recognizedBy": "did:key:z6MkqiuHv7CuN7mXv21ioEdiVvSFwkPKLrJTqbSKZ5ftdbwj",
+                "credentialValidator": [
+                  {
+                    "type": "CredentialValidator",
+                    "id": "data:application/schema+json,%7B%22type%22%3A%22object%22%2C%22required%22%3A%5B%22credentialSubject%22%5D%7D",
+                    "mediaType": "application/schema+json"
+                  }
+                ]
+              }
+            }
+          ],
+          "proof": {
+            "type": "DataIntegrityProof",
+            "created": "2026-11-17T22:46:59Z",
+            "verificationMethod": "did:key:z6MkqiuHv7CuN7mXv21ioEdiVvSFwkPKLrJTqbSKZ5ftdbwj#z6MkqiuHv7CuN7mXv21ioEdiVvSFwkPKLrJTqbSKZ5ftdbwj",
+            "cryptosuite": "eddsa-jcs-2022",
+            "proofPurpose": "assertionMethod",
+            "@context": [
+              "https://www.w3.org/ns/credentials/v2",
+              "https://w3id.org/security/data-integrity/v2",
+              "https://anchor.example/contexts/recognized-entities-test/v1"
+            ],
+            "proofValue": "z54u4UQBecpzmKajHG1USXJ3k994GPRxJ4cv3kA1X7MFRbMV1ifK9x9ft7mS4KFo4fFmHdXnvqYm9ryErDBUU5snZ"
+          }
+        }
+      ],
+      "proof": {
+        "type": "DataIntegrityProof",
+        "created": "2026-11-17T22:46:59Z",
+        "verificationMethod": "did:web:whois.example:issuers:via-intermediate#key-1",
+        "cryptosuite": "eddsa-jcs-2022",
+        "proofPurpose": "authentication",
+        "@context": [
+          "https://www.w3.org/ns/credentials/v2",
+          "https://w3id.org/security/data-integrity/v2"
+        ],
+        "proofValue": "z1jJbZF2bWPEsW1gh1LQDnDJfquwp1Xqza5WDpg7ok7dXt2dsjpCD4gVmQgJ63mXwRocxDSmYM4thx8P38EYykGB"
+      }
+    },
+    "https://whois.example/issuers/intermediate-no-recognized-in/whois.vp": {
+      "@context": [
+        "https://www.w3.org/ns/credentials/v2",
+        "https://w3id.org/security/data-integrity/v2"
+      ],
+      "id": "urn:example:whois:intermediate-no-recognized-in",
+      "type": [
+        "VerifiablePresentation"
+      ],
+      "holder": "did:web:whois.example:issuers:intermediate-no-recognized-in",
+      "verifiableCredential": [
+        {
+          "@context": [
+            "https://www.w3.org/ns/credentials/v2",
+            "https://w3id.org/security/data-integrity/v2",
+            "https://anchor.example/contexts/recognized-entities-test/v1"
+          ],
+          "id": "https://anchor.example/lists/whois-intermediate.json",
+          "type": [
+            "VerifiableCredential",
+            "RecognizedEntityCredential"
+          ],
+          "issuer": {
+            "id": "did:key:z6MkqiuHv7CuN7mXv21ioEdiVvSFwkPKLrJTqbSKZ5ftdbwj",
+            "type": "RecognizedIssuer"
+          },
+          "validFrom": "2025-01-01T00:00:00Z",
+          "credentialSubject": [
+            {
+              "id": "did:web:whois.example:issuers:intermediate-no-recognized-in",
+              "type": "RecognizedEntity",
+              "name": "Chain entity",
+              "recognizedTo": {
+                "type": "RecognizedAction",
+                "action": "issue",
+                "recognizedBy": "did:key:z6MkqiuHv7CuN7mXv21ioEdiVvSFwkPKLrJTqbSKZ5ftdbwj",
+                "credentialValidator": [
+                  {
+                    "type": "CredentialValidator",
+                    "id": "data:application/schema+json,%7B%22type%22%3A%22object%22%2C%22required%22%3A%5B%22credentialSubject%22%5D%7D",
+                    "mediaType": "application/schema+json"
+                  }
+                ]
+              }
+            }
+          ],
+          "proof": {
+            "type": "DataIntegrityProof",
+            "created": "2026-11-17T22:46:59Z",
+            "verificationMethod": "did:key:z6MkqiuHv7CuN7mXv21ioEdiVvSFwkPKLrJTqbSKZ5ftdbwj#z6MkqiuHv7CuN7mXv21ioEdiVvSFwkPKLrJTqbSKZ5ftdbwj",
+            "cryptosuite": "eddsa-jcs-2022",
+            "proofPurpose": "assertionMethod",
+            "@context": [
+              "https://www.w3.org/ns/credentials/v2",
+              "https://w3id.org/security/data-integrity/v2",
+              "https://anchor.example/contexts/recognized-entities-test/v1"
+            ],
+            "proofValue": "z2WwnRUqD5s2eFrRp8pEc5d42UaGbSvjU3gtRv1eh5EaQrvvtMVHHEZ5UxKvzCYCuhv5J24dxqW7ZKaX7ToAJTK27"
+          }
+        }
+      ],
+      "proof": {
+        "type": "DataIntegrityProof",
+        "created": "2026-11-17T22:46:59Z",
+        "verificationMethod": "did:web:whois.example:issuers:intermediate-no-recognized-in#key-1",
+        "cryptosuite": "eddsa-jcs-2022",
+        "proofPurpose": "authentication",
+        "@context": [
+          "https://www.w3.org/ns/credentials/v2",
+          "https://w3id.org/security/data-integrity/v2"
+        ],
+        "proofValue": "z55dTs8CyebHcqznuWkTeYYbkCGyKMss1hZ53NG3Ph8N1xz5S8bZJ36vmnWp8uJps4uZUrq69skYjmNy4PXM2r2rD"
+      }
+    }
+  }
+}

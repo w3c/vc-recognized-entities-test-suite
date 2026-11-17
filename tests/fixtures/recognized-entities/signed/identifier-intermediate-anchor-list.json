@@ -1,0 +1,49 @@
+{
+  "@context": [
+    "https://www.w3.org/ns/credentials/v2",
+    "https://w3id.org/security/data-integrity/v2",
+    "https://anchor.example/contexts/recognized-entities-test/v1"
+  ],
+  "id": "https://anchor.example/lists/whois-intermediate.json",
+  "type": [
+    "VerifiableCredential",
+    "RecognizedEntityCredential"
+  ],
+  "issuer": {
+    "id": "did:key:z6Mkr4eb4pNsvCF8zQkqwKzeAQFsqEm6Kr3jRyAbkcoMaXKw",
+    "type": "RecognizedIssuer"
+  },
+  "validFrom": "2025-01-01T00:00:00Z",
+  "credentialSubject": [
+    {
+      "id": "did:key:z6MkqiuHv7CuN7mXv21ioEdiVvSFwkPKLrJTqbSKZ5ftdbwj",
+      "type": "RecognizedEntity",
+      "name": "Chain entity",
+      "recognizedTo": {
+        "type": "RecognizedAction",
+        "action": "issue",
+        "recognizedBy": "did:key:z6Mkr4eb4pNsvCF8zQkqwKzeAQFsqEm6Kr3jRyAbkcoMaXKw",
+        "credentialValidator": [
+          {
+            "type": "CredentialValidator",
+            "id": "data:application/schema+json,%7B%22type%22%3A%22object%22%2C%22required%22%3A%5B%22credentialSubject%22%5D%7D",
+            "mediaType": "application/schema+json"
+          }
+        ]
+      }
+    }
+  ],
+  "proof": {
+    "type": "DataIntegrityProof",
+    "created": "2026-11-17T22:46:59Z",
+    "verificationMethod": "did:key:z6Mkr4eb4pNsvCF8zQkqwKzeAQFsqEm6Kr3jRyAbkcoMaXKw#z6Mkr4eb4pNsvCF8zQkqwKzeAQFsqEm6Kr3jRyAbkcoMaXKw",
+    "cryptosuite": "eddsa-jcs-2022",
+    "proofPurpose": "assertionMethod",
+    "@context": [
+      "https://www.w3.org/ns/credentials/v2",
+      "https://w3id.org/security/data-integrity/v2",
+      "https://anchor.example/contexts/recognized-entities-test/v1"
+    ],
+    "proofValue": "z4BUC4owZeZqzgK8tsYfMCVD2qZrYhfniq2PBuYMB3amDYrXJkFSja8qikH6udyJSwVdJ53Vne3WG38ka7CN5zKGD"
+  }
+}
