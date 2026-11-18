@@ -103,14 +103,20 @@ export async function acceptsConforming(name) {
 // 1.1 (1) and section 3: the violation of one statement is refused. It is the
 // conforming list, or the known credential, with that one rule broken, so
 // the refusal comes from that violation only.
-async function refusesViolation(name, key) {
+// The verifier's outcome for the violation of one statement, built from the
+// fixture named by key (see scripts/make-fixtures.mjs).
+export async function violationOutcome(name, key) {
   const known = await readFixture('signed/known-issuer-credential.json');
   const {conformingList, violationLists} = await shapesForTests();
   const mutate = makeFixtures.credentialViolations[key];
   const credentials = mutate ?
     [await chains.knownCredentialDocument(mutate), conformingList] :
     [known, violationLists[key]];
-  expectRefused(await verifyOn(name, credentials),
+  return verifyOn(name, credentials);
+}
+
+export async function refusesViolation(name, key) {
+  expectRefused(await violationOutcome(name, key),
     `the violation of ${key}`);
 }
 

@@ -3,15 +3,50 @@
  */
 
 // Hand-written: scripts/scaffold-tests.mjs does not regenerate this file.
+//
+// Each VIOLATIONS entry is one change made to the known-issuer credential
+// (scripts/make-fixtures.mjs). The verifier must refuse each changed one.
 
 import {
-  acceptsConforming, eachViolationList, expectRefused, setupStatementMatrix,
-  statementTests
+  acceptsConforming, refusesViolation, setupStatementMatrix, statementTests,
+  violationOutcome
 } from '../statement-suite.js';
 import {describe} from 'mocha';
 import {expect} from 'chai';
 
-// Spec section: 1.1 Conformance
+// [fixture key, the change made to the credential, the statement it breaks]
+const VIOLATIONS = [
+  ['3-1-general-properties-2', 'delete the issuer type', '3.1 (2)'],
+  ['3-1-general-properties-3', 'issuer legalName = 42', '3.1 (3)'],
+  ['3-1-general-properties-4', 'issuer image = "not a url"', '3.1 (4)'],
+  ['3-1-general-properties-5', 'issuer url = "not a url"', '3.1 (5)'],
+  ['3-1-general-properties-6', 'issuer sameAs = ["not a url"]', '3.1 (6)'],
+  ['3-2-recognizedentity-1', 'subject type = RecognizedIssuer', '3.2 (1)'],
+  ['3-2-recognizedentity-2', 'recognizedIn.id = "not a url"', '3.2 (2)'],
+  ['3-2-recognizedentity-3', 'recognizedIn.type = 42', '3.2 (3)'],
+  ['3-2-recognizedentity-5', 'subject type = RecognizedIssuer (as 3.2 (1))',
+    '3.2 (5)'],
+  ['3-3-recognizedaction-1', 'recognizedTo.type = RecognizedEntity', '3.3 (1)'],
+  ['3-3-recognizedaction-2', 'credentialValidator = []', '3.3 (2)'],
+  ['3-3-recognizedaction-4', 'validFrom has milliseconds', '3.3 (4)'],
+  ['3-3-recognizedaction-6',
+    'validUntil 30 days from now (date set at run time)', '3.3 (6)'],
+  ['3-4-recognizedentitycredential-1', 'delete the issuer', '3.4 (1)'],
+  ['3-4-recognizedentitycredential-3', 'type = [VerifiableCredential] only',
+    '3.4 (3)'],
+  ['3-5-credential-validators-1', 'delete validator id', '3.5 (1)'],
+  ['3-5-credential-validators-2', 'validator id = "schema.json"', '3.5 (2)'],
+  ['3-5-credential-validators-4', 'validator type = JsonSchema', '3.5 (4)'],
+  ['3-5-credential-validators-5', 'delete validator mediaType', '3.5 (5)']
+];
+
+// One negative per violation, labelled with its change and statement.
+function perViolation(check) {
+  return Object.fromEntries(VIOLATIONS.map(([key, change, statement]) =>
+    [`${key} (${change}; breaks ${statement})`,
+      name => check(name, key)]));
+}
+
 describe('1.1 Conformance', function() {
   setupStatementMatrix(this);
 
@@ -21,10 +56,7 @@ describe('1.1 Conformance', function() {
     positive: {
       'the conforming credential is recognized': acceptsConforming
     },
-    negative: {
-      'every violation fixture is refused (one per section 3 rule)':
-        name => eachViolationList(name, expectRefused)
-    }
+    negative: perViolation(refusesViolation)
   });
 
   // 1-1-conformance-2: Conforming processors MUST produce errors when
@@ -33,10 +65,9 @@ describe('1.1 Conformance', function() {
     positive: {
       'the conforming credential produces no errors': acceptsConforming
     },
-    negative: {
-      'every violation fixture produces at least one error':
-        name => eachViolationList(name, (outcome, file) =>
-          expect(outcome.errors, `${file}: errors`).to.not.be.empty)
-    }
+    negative: perViolation(async (name, key) => {
+      const outcome = await violationOutcome(name, key);
+      expect(outcome.errors, `${key}: errors`).to.not.be.empty;
+    })
   });
 });
