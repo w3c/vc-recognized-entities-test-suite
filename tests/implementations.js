@@ -48,6 +48,19 @@ export function issuerExchangeUrls() {
   return urls;
 }
 
+// Map of implementation name to the verifier exchange URL: the
+// verifierExchange field on the implementation's verifier entry. The suite
+// participates in it with a presentation. Missing entries map to undefined.
+export function verifierExchangeUrls() {
+  const urls = new Map();
+  for(const [name, implementation] of taggedVerifiers()) {
+    const verifier = implementation.settings.verifiers.find(
+      v => v.verifierExchange);
+    urls.set(name, verifier?.verifierExchange);
+  }
+  return urls;
+}
+
 export function exchangeUrls() {
   const urls = new Map();
   for(const [name, implementation] of taggedVerifiers()) {

@@ -79,6 +79,19 @@ export async function verify(endpoint, credentials,
   return outcomeOf(await parseJson(response, `POST ${endpoint}`));
 }
 
+// Participates in an exchange (VCALM, Participate in an Exchange): POSTs
+// {verifiablePresentation} to the exchange URL and returns the HTTP status.
+export async function participate(exchange, credentials) {
+  const response = await fetch(exchange, {
+    method: 'POST',
+    headers: {'content-type': 'application/json'},
+    body: JSON.stringify({
+      verifiablePresentation: presentationOf(...credentials)
+    })
+  });
+  return {status: response.status};
+}
+
 // Suite contract, not spec: the documents an implementation publishes.
 export async function publishedDocuments(exchange) {
   const response = await fetch(exchange, {
