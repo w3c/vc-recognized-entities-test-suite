@@ -1,3 +1,4 @@
+import * as makeFixtures from '../../scripts/make-fixtures.mjs';
 /*
  * SPDX-License-Identifier: LicenseRef-w3c-3-clause-bsd-license-2008 OR LicenseRef-w3c-test-suite-license-2023
  */
@@ -5,12 +6,45 @@
 // Hand-written: scripts/scaffold-tests.mjs does not regenerate this file.
 
 import {
-  acceptsConforming, refusesViolation, setupStatementMatrix, statementTests,
-  violationOutcome
+  acceptsConforming, expectRefused, refusesViolation, setupStatementMatrix,
+  statementTests, verifyOn, violationOutcome
 } from '../statement-suite.js';
+import {
+  CREDENTIALS_V2, DATA_INTEGRITY_CONTEXT, keyFromLabel, sign, TEST_CONTEXT_URL
+} from '../signing.js';
 import {describe} from 'mocha';
 import {expect} from 'chai';
 import {NORMATIVE} from '../normative-statements.js';
+import {readFile} from 'node:fs/promises';
+
+// The known credential, from the signed fixtures.
+const knownCredential = async () => JSON.parse(await readFile(new URL(
+  '../fixtures/recognized-entities/signed/known-issuer-credential.json',
+  import.meta.url), 'utf8'));
+
+// The anchor's recognized list, built from the base in make-fixtures.mjs, with
+// one change applied before signing.
+async function anchorListWith(change) {
+  const anchor = await keyFromLabel('vc-recognized-entities test anchor');
+  const issuer = await keyFromLabel('vc-recognized-entities test issuer');
+  const doc = structuredClone(makeFixtures.base);
+  doc['@context'] = [CREDENTIALS_V2, DATA_INTEGRITY_CONTEXT,
+    TEST_CONTEXT_URL];
+  doc.id = 'https://anchor.example/credentials/recognized-issuers.json';
+  doc.issuer.id = anchor.did;
+  const [entity] = doc.credentialSubject;
+  entity.id = issuer.did;
+  entity.recognizedTo.recognizedBy = anchor.did;
+  const schema = {type: 'object', required: ['credentialSubject']};
+  entity.recognizedTo.credentialValidator = {
+    type: 'CredentialValidator',
+    id: 'data:application/schema+json,' +
+      encodeURIComponent(JSON.stringify(schema)),
+    mediaType: 'application/schema+json'
+  };
+  change(doc);
+  return sign(doc, anchor);
+}
 
 // [fixture key, the change made to the credential, the statement it breaks]
 const VIOLATIONS = [
@@ -58,8 +92,12 @@ describe('1.1 Conformance', function() {
           'the conforming credential is recognized': acceptsConforming
         },
         negative: {
-          '3.1 (2): delete issuer type':
-            name => refusesViolation(name, '3-1-general-properties-2'),
+          '3.1 (2): delete issuer type': async name => expectRefused(
+            await verifyOn(name, [await knownCredential(),
+              await anchorListWith(doc => {
+                delete doc.issuer.type;
+              })]),
+            '3.1 (2)'),
           '3.1 (3): issuer legalName = 42':
             name => refusesViolation(name, '3-1-general-properties-3'),
           '3.1 (4): issuer image not a URL':
