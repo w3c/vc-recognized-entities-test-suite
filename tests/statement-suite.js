@@ -37,13 +37,6 @@ const VCDM = 'https://www.w3.org/TR/vc-data-model#';
 const CREDENTIAL_VALIDATION_ERROR = VCDM + 'CREDENTIAL_VALIDATION_ERROR';
 const UNRECOGNIZED_OPTION_ERROR = VCDM + 'UNRECOGNIZED_OPTION_ERROR';
 
-// Rows whose tests use something the spec does not define. The note is added
-// after the verbatim statement in the row text.
-const SUITE_CONTRACT = {
-  '4-4-1-1-javascript-credential-validation-function-7':
-    'positive reads published validators from the exchange URL'
-};
-
 // Sets the report flags on a describe block. Call it as
 // `setupStatementMatrix(this)` inside `describe(..., function() {})`.
 export function setupStatementMatrix(suite,
@@ -201,13 +194,6 @@ const THROWS_UNRECOGNIZED = HEAD +
   `  error.type = '${UNRECOGNIZED_OPTION_ERROR}';\n` +
   '  throw error;\n}\n';
 
-// The validator code that the 4.4.1.1 (7) checker must refuse: it reads the
-// clock or random numbers, so the same input gives different results.
-const DEPENDS_ON_CLOCK = HEAD + '  return {valid: true, errors: [],\n' +
-  `    warnings: [{type: '${NOTE}', title: String(Date.now())}]};\n}\n`;
-const DEPENDS_ON_RANDOM = HEAD + '  return {valid: true, errors: [],\n' +
-  `    warnings: [{type: '${NOTE}', title: String(Math.random())}]};\n}\n`;
-
 function javaScriptSource(id) {
   const match = /^data:text\/javascript,(.*)$/.exec(id ?? '');
   return match ? decodeURIComponent(match[1]) : undefined;
@@ -236,18 +222,6 @@ export async function expectRepeatable(validator, credential, options) {
     {now: Date.parse('2040-06-15T12:34:56Z'), seed: 2});
   expect(second, 'same credential and options must give the same result, ' +
     'whatever the time and random numbers').to.deep.equal(first);
-}
-
-async function expectNotRepeatable(code) {
-  const validator = {id: 'data:text/javascript,' + encodeURIComponent(code)};
-  let failed = false;
-  try {
-    await expectRepeatable(validator, {type: 'VerifiableCredential'}, {});
-  } catch(error) {
-    failed = true;
-  }
-  expect(failed, 'the checker must refuse a validator whose result depends ' +
-    'on the clock or random numbers').to.equal(true);
 }
 
 // Suite contract, not spec: the JavaScript validators the implementation
@@ -377,16 +351,21 @@ const SUBTESTS = {
       () => refusesBrokenValidator(name, NON_PROBLEM_ITEM))
   ],
   // 4.4.1.1 (7): the function depends only on credential and options. The
-  // spec states no verifier behavior for a validator that breaks this, so the
-  // negative is the checker refusing known-bad code (team rule 7), and the
-  // positive runs the validators the implementation publishes (suite
+  // spec states no verifier behavior for a validator that breaks this, so there
+  // is no implementation negative. The checker's own negatives live in tools/.
+  // The positive runs the validators the implementation publishes (suite
   // contract, not spec).
   '4-4-1-1-javascript-credential-validation-function-7': function(name) {
+    const noSpecNegative = () => {
+      throw new Skip('the spec states no verifier behavior for a validator ' +
+        'that reads the clock or random numbers, so there is no ' +
+        'implementation negative');
+    };
     return [
-      negative('the checker refuses a validator that reads the clock',
-        () => expectNotRepeatable(DEPENDS_ON_CLOCK)),
-      negative('the checker refuses a validator that reads random numbers',
-        () => expectNotRepeatable(DEPENDS_ON_RANDOM)),
+      negative('no spec-stated refusal for a validator that reads the clock',
+        noSpecNegative),
+      negative('no spec-stated refusal for a validator that reads random ' +
+        'numbers', noSpecNegative),
       positive('published validators give the same result for the same ' +
         'input (suite contract, not spec)', async () => {
         const published = await publishedJavaScriptValidators(name);
@@ -437,9 +416,8 @@ function registerRowText(key, text) {
  * @param {string} key - Statement key, such as '3-2-recognizedentity-1'.
  */
 export function statementTests(key) {
-  const note = SUITE_CONTRACT[key];
-  const statement = note ?
-    `${NORMATIVE[key]} [suite contract, not spec: ${note}]` : NORMATIVE[key];
+  // the statement is the spec sentence, verbatim
+  const statement = NORMATIVE[key];
   registerRowText(key, statement);
   for(const name of implementationNames()) {
     it(`[MUST] ${statement}`, async function() {
