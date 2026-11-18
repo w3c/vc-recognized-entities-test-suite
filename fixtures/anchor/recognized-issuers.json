@@ -1,0 +1,60 @@
+{
+  "@context": [
+    "https://www.w3.org/ns/credentials/v2",
+    "https://www.w3.org/ns/credentials/examples/v2"
+  ],
+  "id": "https://w3c.github.io/vc-recognized-entities-test-suite/fixtures/anchor/recognized-issuers.json",
+  "type": [
+    "VerifiableCredential",
+    "RecognizedEntityCredential"
+  ],
+  "issuer": {
+    "id": "did:key:z6Mkr4eb4pNsvCF8zQkqwKzeAQFsqEm6Kr3jRyAbkcoMaXKw",
+    "type": "RecognizedIssuer",
+    "name": "Test Anchor",
+    "legalName": {
+      "@value": "Test Anchor Legal Name LLC",
+      "@language": "en"
+    },
+    "image": "data:image/png;base64,iVBORw0KGgo=",
+    "url": "https://anchor.example/",
+    "sameAs": [
+      "https://anchor.example/entities/test-anchor"
+    ],
+    "recognizedIn": {
+      "id": "https://anchor.example/lists/recognized-issuers.json",
+      "type": "RecognizedEntityCredential"
+    }
+  },
+  "validFrom": "2025-01-01T00:00:00Z",
+  "credentialSubject": [
+    {
+      "id": "did:key:z6MkuTt8pzfcFa7ZDNGEfmgx1eYdXr8CUsjfzcQNbaf8Yn3t",
+      "type": "RecognizedEntity",
+      "name": "Test Issuer",
+      "recognizedTo": {
+        "type": "RecognizedAction",
+        "action": "issue",
+        "recognizedBy": "did:key:z6Mkr4eb4pNsvCF8zQkqwKzeAQFsqEm6Kr3jRyAbkcoMaXKw",
+        "validFrom": "2025-01-01T00:00:00Z",
+        "credentialValidator": {
+          "type": "CredentialValidator",
+          "id": "https://w3c.github.io/vc-recognized-entities-test-suite/fixtures/validators/credential-subject.schema.json",
+          "mediaType": "application/schema+json"
+        }
+      }
+    }
+  ],
+  "proof": {
+    "type": "DataIntegrityProof",
+    "created": "2026-11-18T21:55:20Z",
+    "verificationMethod": "did:key:z6Mkr4eb4pNsvCF8zQkqwKzeAQFsqEm6Kr3jRyAbkcoMaXKw#z6Mkr4eb4pNsvCF8zQkqwKzeAQFsqEm6Kr3jRyAbkcoMaXKw",
+    "cryptosuite": "eddsa-jcs-2022",
+    "proofPurpose": "assertionMethod",
+    "@context": [
+      "https://www.w3.org/ns/credentials/v2",
+      "https://www.w3.org/ns/credentials/examples/v2"
+    ],
+    "proofValue": "z3vMbiaZkshCwyociE25JRK892e5pPeiCFfuVWirEAaTGuTkgBtek6FRQuDgSRNLJk4cwrv74FLGow1Gk7xUUyaFf"
+  }
+}
