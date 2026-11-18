@@ -12,32 +12,31 @@
 // with one section 3 rule broken must get 400 (Invalid input).
 
 import {
-  anchorListWith, attempt, knownIssuerCredential
+  anchorListWith, attempt, knownCredentialDocument, knownIssuerCredential,
+  participate, runtimeDateTime, setupStatementMatrix
 } from '../helpers.js';
 import {describe, it} from 'mocha';
 import {expect} from 'chai';
 import {filterByTag} from 'vc-test-suite-implementations';
-import {knownCredentialDocument} from '../chains.js';
 import {NORMATIVE} from '../normative-statements.js';
-import {participate} from '../transport.js';
-import {runtimeDateTime} from '../../scripts/make-fixtures.mjs';
-import {setupStatementMatrix} from '../statement-suite.js';
-import {verifierExchangeUrls} from '../implementations.js';
 
 // Verifiers tagged for this suite. Each one gets its own describe below.
 const tag = 'recognized-entities';
 const {match} = filterByTag({tags: [tag], property: 'verifiers'});
-const verifierExchanges = verifierExchangeUrls();
+// The verifier exchange of each implementation: the verifierExchange field on
+// its verifier entry.
+const verifierExchangeOf = name => match.get(name).settings.verifiers
+  .find(v => v.verifierExchange)?.verifierExchange;
 
 describe('1.1 Conformance', function() {
-  setupStatementMatrix(this);
+  setupStatementMatrix(this, match.keys());
 
   for(const name of match.keys()) {
     describe(name, function() {
       it(`${NORMATIVE['1-1-conformance-2']}`, async function() {
         this.test.cell = {columnId: name, rowId: '1-1-conformance-2',
           statement: NORMATIVE['1-1-conformance-2']};
-        const exchange = verifierExchanges.get(name);
+        const exchange = verifierExchangeOf(name);
         if(!exchange) {
           this.test.cell.skipMessage = 'no verifier exchange configured';
           this.skip();

@@ -2,18 +2,36 @@
  * SPDX-License-Identifier: LicenseRef-w3c-3-clause-bsd-license-2008 OR LicenseRef-w3c-test-suite-license-2023
  */
 
-// Shared helpers for the section files and the fixture builder.
+// Helpers for the section files: the report matrix, the exchange request, and
+// the documents the tests send.
 
-import * as makeFixtures from '../scripts/make-fixtures.mjs';
 import {
   CREDENTIALS_V2, DATA_INTEGRITY_CONTEXT, keyFromLabel, sign, TEST_CONTEXT_URL
 } from './signing.js';
-import {expect} from 'chai';
 import {readFile} from 'node:fs/promises';
+
+const ANCHOR_LIST_URL =
+  'https://anchor.example/credentials/recognized-issuers.json';
+const CONTEXT = [CREDENTIALS_V2, DATA_INTEGRITY_CONTEXT, TEST_CONTEXT_URL];
+
+const anchorKey = () => keyFromLabel('vc-recognized-entities test anchor');
+const issuerKey = () => keyFromLabel('vc-recognized-entities test issuer');
+
+// Report matrix ------------------------------------------------------------
+
+// Marks a section describe as a report matrix, with one column per
+// implementation name. Call it as `setupStatementMatrix(this, names)`.
+export function setupStatementMatrix(suite, names) {
+  suite.report = true;
+  suite.matrix = true;
+  suite.implemented = [...names];
+  suite.notImplemented = [];
+  suite.rowLabel = 'Normative statement';
+  suite.columnLabel = 'Implementation';
+}
 
 // Runs one check. A failure is recorded in failures, not thrown, so the other
 // checks in the same test still run. The test fails once, after all checks.
-
 export async function attempt(failures, label, run) {
   try {
     await run();
@@ -22,63 +40,102 @@ export async function attempt(failures, label, run) {
   }
 }
 
-// The known issuer credential, from the signed fixtures.
+// Exchange -----------------------------------------------------------------
+
+// Participates in an exchange (VCALM, Participate in an Exchange): POSTs
+// {verifiablePresentation} with the given credentials to the exchange URL,
+// and returns the HTTP status.
+export async function participate(exchange, credentials) {
+  const response = await fetch(exchange, {
+    method: 'POST',
+    headers: {'content-type': 'application/json'},
+    body: JSON.stringify({
+      verifiablePresentation: {
+        '@context': [CREDENTIALS_V2],
+        type: ['VerifiablePresentation'],
+        verifiableCredential: credentials
+      }
+    })
+  });
+  return {status: response.status};
+}
+
+// Documents ----------------------------------------------------------------
+
+// The known issuer credential: a credential from the recognized test issuer,
+// from the signed fixtures.
 export async function knownIssuerCredential() {
   return JSON.parse(await readFile(new URL(
     './fixtures/recognized-entities/signed/known-issuer-credential.json',
     import.meta.url), 'utf8'));
 }
 
-// The anchor's recognized list for the known issuer. It is built from the base
-// credential in scripts/make-fixtures.mjs, with one change applied before the
-// anchor signs it. Used by the statement tests and by the fixture builder.
-
-export const ANCHOR_LIST_URL =
-  'https://anchor.example/credentials/recognized-issuers.json';
-export const LIST_CONTEXT =
-  [CREDENTIALS_V2, DATA_INTEGRITY_CONTEXT, TEST_CONTEXT_URL];
-
-// The validator that accepts any credential that has a credentialSubject.
-export function acceptingValidator() {
-  const schema = {type: 'object', required: ['credentialSubject']};
-  return {
-    type: 'CredentialValidator',
-    id: 'data:application/schema+json,' +
-      encodeURIComponent(JSON.stringify(schema)),
-    mediaType: 'application/schema+json'
+// The known issuer credential built at run time, with one change applied
+// before the test issuer signs it.
+export async function knownCredentialDocument(change = () => {}) {
+  const issuer = await issuerKey();
+  const document = {
+    '@context': CONTEXT,
+    type: ['VerifiableCredential', 'ExampleCredential'],
+    issuer: {id: issuer.did, recognizedIn: {
+      id: ANCHOR_LIST_URL, type: 'RecognizedEntityCredential'
+    }},
+    validFrom: '2025-06-01T00:00:00Z',
+    credentialSubject: {id: 'urn:example:subject', name: 'Test Subject'}
   };
+  change(document);
+  return sign(document, issuer);
 }
 
-// Builds the list, applies `change` to it, and signs it as the anchor.
-export async function anchorList({
-  anchor, issuer, context = LIST_CONTEXT, passes = acceptingValidator(),
-  change = () => {}
-}) {
-  const doc = structuredClone(makeFixtures.base);
-  doc['@context'] = context;
-  doc.id = ANCHOR_LIST_URL;
-  if(doc.issuer) {
-    doc.issuer.id = anchor.did;
-  }
-  const [entity] = doc.credentialSubject;
-  entity.id = issuer.did;
-  entity.recognizedTo.recognizedBy = anchor.did;
-  entity.recognizedTo.credentialValidator = {...passes};
+// The anchor's recognized list for the test issuer, with one change applied
+// before the anchor signs it. Its validator accepts any credential that has a
+// credentialSubject, so a refusal comes from the change, not the validator.
+export async function anchorListWith(change = () => {}) {
+  const anchor = await anchorKey();
+  const issuer = await issuerKey();
+  const schema = {type: 'object', required: ['credentialSubject']};
+  const doc = {
+    '@context': CONTEXT,
+    id: ANCHOR_LIST_URL,
+    type: ['VerifiableCredential', 'RecognizedEntityCredential'],
+    issuer: {
+      id: anchor.did,
+      type: 'RecognizedIssuer',
+      name: 'Test Anchor',
+      legalName: {'@value': 'Test Anchor Legal Name LLC', '@language': 'en'},
+      image: 'data:image/png;base64,iVBORw0KGgo=',
+      url: 'https://anchor.example/',
+      sameAs: ['https://anchor.example/entities/test-anchor'],
+      recognizedIn: {
+        id: 'https://anchor.example/lists/recognized-issuers.json',
+        type: 'RecognizedEntityCredential'
+      }
+    },
+    validFrom: '2025-01-01T00:00:00Z',
+    credentialSubject: [{
+      id: issuer.did,
+      type: 'RecognizedEntity',
+      name: 'Test Issuer',
+      recognizedTo: {
+        type: 'RecognizedAction',
+        action: 'issue',
+        recognizedBy: anchor.did,
+        validFrom: '2025-01-01T00:00:00Z',
+        credentialValidator: {
+          type: 'CredentialValidator',
+          id: 'data:application/schema+json,' +
+            encodeURIComponent(JSON.stringify(schema)),
+          mediaType: 'application/schema+json'
+        }
+      }
+    }]
+  };
   change(doc);
   return sign(doc, anchor);
 }
 
-// The anchor's list for the known issuer, with one change, using the test keys.
-export async function anchorListWith(change) {
-  const anchor = await keyFromLabel('vc-recognized-entities test anchor');
-  const issuer = await keyFromLabel('vc-recognized-entities test issuer');
-  return anchorList({anchor, issuer, change});
-}
-
-// The verifier refused the input: not recognized, or at least one error.
-export function expectRefused(outcome, message) {
-  const refused = !(outcome.recognized && outcome.actionRecognized) ||
-    outcome.errors.length > 0;
-  expect(refused, `${message}: must not be recognized, or must report an ` +
-    'error').to.equal(true);
+// A date and time 30 days from now, with the given zone suffix.
+export function runtimeDateTime(suffix = 'Z') {
+  const later = new Date(Date.now() + 30 * 24 * 60 * 60 * 1000);
+  return later.toISOString().slice(0, 19) + suffix;
 }
