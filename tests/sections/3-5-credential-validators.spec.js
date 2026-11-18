@@ -2,11 +2,15 @@
  * SPDX-License-Identifier: LicenseRef-w3c-3-clause-bsd-license-2008 OR LicenseRef-w3c-test-suite-license-2023
  */
 
-// Each statement is one test per implementation: the conforming presentation
-// must get 200, and the presentation with the statement broken must get 400
-// (see the README, "The exchange endpoint").
+// Each statement is one test per implementation (see statementTest in
+// ../helpers.js). The test sends signed presentations to the verifier's
+// exchange (see the README, "The exchange endpoint"): the conforming
+// presentation must be accepted (200), and each presentation that breaks a
+// rule must be refused (400).
 
-import {listWith, setupStatementMatrix, statementTest} from '../helpers.js';
+import {
+  listWith, setupStatementMatrix, statementTest, validatorOf
+} from '../helpers.js';
 import {describe} from 'mocha';
 import {filterByTag} from 'vc-test-suite-implementations';
 
@@ -14,10 +18,6 @@ import {filterByTag} from 'vc-test-suite-implementations';
 const tag = 'recognized-entities';
 const {match: verifierImplementations} = filterByTag(
   {tags: [tag], property: 'verifiers'});
-
-// The credential validator of the anchor's list, in the document `doc`.
-const validatorOf = doc =>
-  doc.credentialSubject[0].recognizedTo.credentialValidator;
 
 describe('3.5 Credential Validators', function() {
   setupStatementMatrix(this, verifierImplementations.keys());
@@ -32,7 +32,7 @@ describe('3.5 Credential Validators', function() {
         name, exchange, rowId: '3-5-credential-validators-1'
       }, async ({accepts, refuses}) => {
         await accepts('the conforming presentation', listWith());
-        await refuses('validator id deleted', listWith(doc => {
+        await refuses('3.5 (1): validator id deleted', listWith(doc => {
           delete validatorOf(doc).id;
         }));
       });
@@ -40,7 +40,7 @@ describe('3.5 Credential Validators', function() {
         name, exchange, rowId: '3-5-credential-validators-2'
       }, async ({accepts, refuses}) => {
         await accepts('the conforming presentation', listWith());
-        await refuses('validator id = schema.json', listWith(doc => {
+        await refuses('3.5 (2): validator id = schema.json', listWith(doc => {
           validatorOf(doc).id = 'schema.json';
         }));
       });
@@ -48,7 +48,7 @@ describe('3.5 Credential Validators', function() {
         name, exchange, rowId: '3-5-credential-validators-4'
       }, async ({accepts, refuses}) => {
         await accepts('the conforming presentation', listWith());
-        await refuses('validator type JsonSchema', listWith(doc => {
+        await refuses('3.5 (4): validator type JsonSchema', listWith(doc => {
           validatorOf(doc).type = 'JsonSchema';
         }));
       });
@@ -56,7 +56,7 @@ describe('3.5 Credential Validators', function() {
         name, exchange, rowId: '3-5-credential-validators-5'
       }, async ({accepts, refuses}) => {
         await accepts('the conforming presentation', listWith());
-        await refuses('validator mediaType deleted', listWith(doc => {
+        await refuses('3.5 (5): validator mediaType deleted', listWith(doc => {
           delete validatorOf(doc).mediaType;
         }));
       });

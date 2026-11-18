@@ -2,56 +2,40 @@
  * SPDX-License-Identifier: LicenseRef-w3c-3-clause-bsd-license-2008 OR LicenseRef-w3c-test-suite-license-2023
  */
 
-// Each statement is one test per implementation. Its checks run in order, and
-// their failures are collected, so the test fails once with all of them.
+// Each statement is one test per implementation (see statementTest in
+// ../helpers.js). The test sends signed presentations to the verifier's
+// exchange (see the README, "The exchange endpoint"): the conforming
+// presentation must be accepted (200), and each presentation that breaks a
+// rule must be refused (400).
 //
-// 1.1 (2) posts signed presentations to the verifier's exchange URL, used only
-// as an endpoint (see the README, "The exchange endpoint"): the conforming
-// presentation must get 200, and each presentation with one section 3 rule
-// broken must get 400.
+// 1.1 (2) refuses one presentation for each section 3 rule.
 
 import {
-  credentialWith, exchangeChecks, listWith, recordRow, runtimeDateTime,
-  setupStatementMatrix
+  credentialWith, listWith, runtimeDateTime, setupStatementMatrix,
+  statementTest, unsatisfiedValidator, validatorOf
 } from '../helpers.js';
-import {describe, it} from 'mocha';
-import {expect} from 'chai';
+import {describe} from 'mocha';
 import {filterByTag} from 'vc-test-suite-implementations';
-import {LINK} from '../normative-links.js';
-import {NORMATIVE} from '../normative-statements.js';
 
 // Verifiers tagged for this suite. Each one gets its own describe below.
 const tag = 'recognized-entities';
 const {match: verifierImplementations} = filterByTag(
   {tags: [tag], property: 'verifiers'});
 
-// The statement this file tests: its row in the report.
-const rowId = '1-1-conformance-2';
-
 describe('1.1 Conformance', function() {
   setupStatementMatrix(this, verifierImplementations.keys());
 
   for(const name of verifierImplementations.keys()) {
     // The exchange field on this implementation's tagged verifier entry.
-    // Without it, the test is skipped.
+    // Without it, the tests are skipped.
     const exchange = verifierImplementations.get(name).settings.verifiers
       .find(v => v.tags?.includes(tag))?.exchange;
     describe(name, function() {
-      it(NORMATIVE[rowId], async function() {
-        this.test.cell = {columnId: name, rowId, statement: NORMATIVE[rowId]};
-        this.test.link = LINK[rowId];
-        recordRow(rowId, NORMATIVE[rowId]);
-        if(!exchange) {
-          this.test.cell.skipMessage = 'no verifier exchange configured';
-          this.skip();
-        }
-        const failures = [];
-        // Sends the presentation to the verifier exchange; it must be
-        // accepted (200) or refused as invalid input (400).
-        const {accepts, refuses} = exchangeChecks(exchange, {failures});
-
-        await accepts('the conforming presentation', listWith(() => {}));
-        await refuses('3.1 (2): delete issuer type', listWith(doc => {
+      statementTest({
+        name, exchange, rowId: '1-1-conformance-2'
+      }, async ({accepts, refuses}) => {
+        await accepts('the conforming presentation', listWith());
+        await refuses('3.1 (2): issuer type deleted', listWith(doc => {
           delete doc.issuer.type;
         }));
         await refuses('3.1 (3): issuer legalName = 42', listWith(doc => {
@@ -74,52 +58,54 @@ describe('1.1 Conformance', function() {
           credentialWith(doc => {
             doc.issuer.recognizedIn.id = 'not a url';
           }));
-        await refuses('3.2 (3): recognizedIn.type = 42', credentialWith(doc => {
-          doc.issuer.recognizedIn.type = 42;
-        }));
+        await refuses('3.2 (3): recognizedIn.type = 42',
+          credentialWith(doc => {
+            doc.issuer.recognizedIn.type = 42;
+          }));
         await refuses('3.2 (5): subject type RecognizedIssuer',
           listWith(doc => {
             doc.credentialSubject[0].type = 'RecognizedIssuer';
           }));
         await refuses('3.3 (1): recognizedTo.type RecognizedEntity',
           listWith(doc => {
-            doc.credentialSubject[0].recognizedTo.type =
-              'RecognizedEntity';
+            doc.credentialSubject[0].recognizedTo.type = 'RecognizedEntity';
           }));
         await refuses('3.3 (2): credentialValidator = []', listWith(doc => {
           doc.credentialSubject[0].recognizedTo.credentialValidator = [];
         }));
+        await refuses('3.3 (3): second validator not satisfied',
+          listWith(doc => {
+            const action = doc.credentialSubject[0].recognizedTo;
+            action.credentialValidator =
+              [action.credentialValidator, unsatisfiedValidator];
+          }));
         await refuses('3.3 (4): validFrom has milliseconds', listWith(doc => {
           doc.credentialSubject[0].recognizedTo.validFrom =
             '2025-01-01T00:00:00.500Z';
         }));
-        await refuses('3.3 (6): validUntil 30 days from now', listWith(doc => {
+        await refuses('3.3 (6): validUntil not in UTC', listWith(doc => {
           doc.credentialSubject[0].recognizedTo.validUntil =
             runtimeDateTime('+01:00');
         }));
-        await refuses('3.4 (1): delete the issuer', listWith(doc => {
+        await refuses('3.4 (1): issuer deleted', listWith(doc => {
           delete doc.issuer;
         }));
         await refuses('3.4 (3): type without RecognizedEntityCredential',
           listWith(doc => {
             doc.type = ['VerifiableCredential'];
           }));
-        await refuses('3.5 (1): delete validator id', listWith(doc => {
-          delete doc.credentialSubject[0].recognizedTo.credentialValidator.id;
+        await refuses('3.5 (1): validator id deleted', listWith(doc => {
+          delete validatorOf(doc).id;
         }));
         await refuses('3.5 (2): validator id = schema.json', listWith(doc => {
-          doc.credentialSubject[0].recognizedTo.credentialValidator.id =
-            'schema.json';
+          validatorOf(doc).id = 'schema.json';
         }));
         await refuses('3.5 (4): validator type JsonSchema', listWith(doc => {
-          doc.credentialSubject[0].recognizedTo.credentialValidator.type =
-            'JsonSchema';
+          validatorOf(doc).type = 'JsonSchema';
         }));
-        await refuses('3.5 (5): delete validator mediaType', listWith(doc => {
-          delete doc.credentialSubject[0].recognizedTo.credentialValidator
-            .mediaType;
+        await refuses('3.5 (5): validator mediaType deleted', listWith(doc => {
+          delete validatorOf(doc).mediaType;
         }));
-        expect(failures, 'checks that failed').to.deep.equal([]);
       });
     });
   }
