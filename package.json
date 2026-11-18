@@ -5,7 +5,7 @@
   "type": "module",
   "private": true,
   "scripts": {
-    "test": "mocha --require ./templates/register-helpers.cjs 'tests/**/*.spec.js' --timeout 15000 --preserve-symlinks --reporter @digitalbazaar/mocha-w3c-interop-reporter --reporter-options abstract=\"$PWD/abstract.hbs\",reportDir=\"$PWD/reports\",respec=\"$PWD/respecConfig.json\",title=\"Recognized Entities Interoperability Report\",suiteLog='./reports/suite.log',templateData=\"$PWD/reports/index.json\",metrics=\"$PWD/templates/metrics.hbs\",matrix=\"$PWD/templates/matrix.hbs\"",
+    "test": "mocha --require ./templates/register-helpers.cjs 'tests/**/*.spec.js' --timeout 15000 --preserve-symlinks --reporter @digitalbazaar/mocha-w3c-interop-reporter --reporter-options abstract=\"$PWD/abstract.hbs\",reportDir=\"$PWD/reports\",respec=\"$PWD/respecConfig.json\",title=\"Recognized Entities Interoperability Report\",suiteLog='./suite.log',templateData=\"$PWD/reports/index.json\",metrics=\"$PWD/templates/metrics.hbs\",matrix=\"$PWD/templates/matrix.hbs\"",
     "lint": "eslint --ext .js,.mjs,.cjs ."
   },
   "license": "(LicenseRef-w3c-3-clause-bsd-license-2008 OR LicenseRef-w3c-test-suite-license-2023)",
