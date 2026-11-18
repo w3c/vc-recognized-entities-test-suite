@@ -8,6 +8,10 @@
 import {
   CREDENTIALS_V2, EXAMPLES_CONTEXT_URL, keyFromLabel, sign, signPresentation
 } from './signing.js';
+import {expect} from 'chai';
+import {it} from 'mocha';
+import {LINK} from './normative-links.js';
+import {NORMATIVE} from './normative-statements.js';
 import {randomUUID} from 'node:crypto';
 import {readFile} from 'node:fs/promises';
 
@@ -72,7 +76,66 @@ export async function participate(exchange, credentials) {
   return {status: response.status};
 }
 
+// Statement tests ----------------------------------------------------------
+
+// One test for one statement and one implementation. It fills the report
+// cell, skips when the verifier has no exchange, and runs `checks` with the
+// accepts and refuses checks for that exchange. Each check sends the
+// presentation that `documents` builds, and expects 200 (accepts) or 400
+// (refuses). A failed check is recorded under its label and the next one
+// runs, so the test fails once, with every failed check.
+export function statementTest({name, exchange, rowId}, checks) {
+  it(NORMATIVE[rowId], async function() {
+    this.test.cell = {columnId: name, rowId, statement: NORMATIVE[rowId]};
+    this.test.link = LINK[rowId];
+    recordRow(rowId, NORMATIVE[rowId]);
+    if(!exchange) {
+      this.test.cell.skipMessage = 'no verifier exchange configured';
+      this.skip();
+    }
+    const failures = [];
+    const sends = (label, status, documents) => attempt(
+      failures, label, async () => {
+        const reply = await participate(exchange, await documents());
+        expect(reply.status).to.equal(status);
+      });
+    await checks({
+      accepts: (label, documents) => sends(label, 200, documents),
+      refuses: (label, documents) => sends(label, 400, documents)
+    });
+    expect(failures, 'checks that failed').to.deep.equal([]);
+  });
+}
+
 // Documents ----------------------------------------------------------------
+
+// The credentials of a presentation: the known issuer credential and the
+// anchor's list, with `change` applied to the list.
+export function listWith(change = () => {}) {
+  return async () =>
+    [await knownIssuerCredential(), await anchorListWith(change)];
+}
+
+// The same, with `change` applied to the credential instead.
+export function credentialWith(change) {
+  return async () =>
+    [await knownCredentialDocument(change), await anchorListWith()];
+}
+
+// The credential validator in the anchor's list `doc`.
+export function validatorOf(doc) {
+  return doc.credentialSubject[0].recognizedTo.credentialValidator;
+}
+
+// A credential validator that the known issuer credential does not satisfy:
+// its schema requires a property the credential does not have.
+export const unsatisfiedValidator = {
+  type: 'CredentialValidator',
+  id: 'data:application/schema+json,' + encodeURIComponent(JSON.stringify({
+    type: 'object', required: ['notInTheCredential']
+  })),
+  mediaType: 'application/schema+json'
+};
 
 // The known issuer credential: a credential from the recognized test issuer,
 // from the signed fixtures.
