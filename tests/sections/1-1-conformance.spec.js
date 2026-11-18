@@ -45,253 +45,91 @@ describe('1.1 Conformance', function() {
           this.skip();
         }
         const failures = [];
-        await attempt(
-          failures,
-          'the conforming presentation is accepted',
-          async () => {
-            const reply = await participate(exchange, [
-              await knownIssuerCredential(),
-              await anchorListWith(() => {}),
-            ]);
-            expect(reply.status, 'the conforming presentation').to.equal(200);
+        // Sends the presentation to the verifier exchange; it must be
+        // accepted (200) or refused as invalid input (400).
+        const sends = (label, status, documents) => attempt(
+          failures, label, async () => {
+            const reply = await participate(exchange, await documents());
+            expect(reply.status, label).to.equal(status);
           });
-        await attempt(
-          failures,
-          '3.1 (2): delete issuer type',
-          async () => {
-            const reply =
-              await participate(exchange, [await knownIssuerCredential(),
-                await anchorListWith(doc => {
-                  delete doc.issuer.type;
-                }),
-              ]);
-            expect(reply.status, '3.1 (2)').to.equal(400);
-          });
-        await attempt(
-          failures,
-          '3.1 (3): issuer legalName = 42',
-          async () => {
-            const reply =
-              await participate(exchange, [await knownIssuerCredential(),
-                await anchorListWith(doc => {
-                  doc.issuer.legalName = 42;
-                }),
-              ]);
-            expect(reply.status, '3.1 (3)').to.equal(400);
-          });
-        await attempt(
-          failures,
-          '3.1 (4): issuer image not a URL',
-          async () => {
-            const reply =
-              await participate(exchange, [await knownIssuerCredential(),
-                await anchorListWith(doc => {
-                  doc.issuer.image = 'not a url';
-                }),
-              ]);
-            expect(reply.status, '3.1 (4)').to.equal(400);
-          });
-        await attempt(
-          failures,
-          '3.1 (5): issuer url not a URL',
-          async () => {
-            const reply =
-              await participate(exchange, [await knownIssuerCredential(),
-                await anchorListWith(doc => {
-                  doc.issuer.url = 'not a url';
-                }),
-              ]);
-            expect(reply.status, '3.1 (5)').to.equal(400);
-          });
-        await attempt(
-          failures,
-          '3.1 (6): issuer sameAs not a URL',
-          async () => {
-            const reply =
-              await participate(exchange, [await knownIssuerCredential(),
-                await anchorListWith(doc => {
-                  doc.issuer.sameAs = ['not a url'];
-                }),
-              ]);
-            expect(reply.status, '3.1 (6)').to.equal(400);
-          });
-        await attempt(
-          failures,
-          '3.2 (1): subject type RecognizedIssuer',
-          async () => {
-            const reply =
-              await participate(exchange, [await knownIssuerCredential(),
-                await anchorListWith(doc => {
-                  doc.credentialSubject[0].type = 'RecognizedIssuer';
-                }),
-              ]);
-            expect(reply.status, '3.2 (1)').to.equal(400);
-          });
-        await attempt(
-          failures,
-          '3.2 (2): recognizedIn.id not a URL',
-          async () => {
-            const reply = await participate(exchange, [
-              await knownCredentialDocument(doc => {
-                doc.issuer.recognizedIn.id = 'not a url';
-              }),
-              await anchorListWith(() => {}),
-            ]);
-            expect(reply.status, '3.2 (2)').to.equal(400);
-          });
-        await attempt(
-          failures,
-          '3.2 (3): recognizedIn.type = 42',
-          async () => {
-            const reply = await participate(exchange, [
-              await knownCredentialDocument(doc => {
-                doc.issuer.recognizedIn.type = 42;
-              }),
-              await anchorListWith(() => {}),
-            ]);
-            expect(reply.status, '3.2 (3)').to.equal(400);
-          });
-        await attempt(
-          failures,
-          '3.2 (5): subject type RecognizedIssuer',
-          async () => {
-            const reply =
-              await participate(exchange, [await knownIssuerCredential(),
-                await anchorListWith(doc => {
-                  doc.credentialSubject[0].type = 'RecognizedIssuer';
-                }),
-              ]);
-            expect(reply.status, '3.2 (5)').to.equal(400);
-          });
-        await attempt(
-          failures,
-          '3.3 (1): recognizedTo.type RecognizedEntity',
-          async () => {
-            const reply =
-              await participate(exchange, [await knownIssuerCredential(),
-                await anchorListWith(doc => {
-                  doc.credentialSubject[0].recognizedTo.type =
+        const accepts = (label, documents) => sends(label, 200, documents);
+        const refuses = (label, documents) => sends(label, 400, documents);
+        // The known issuer credential and the anchor's list, with `change`
+        // applied to the list, or to the credential.
+        const listWith = change => async () =>
+          [await knownIssuerCredential(), await anchorListWith(change)];
+        const credentialWith = change => async () =>
+          [await knownCredentialDocument(change), await anchorListWith()];
+
+        await accepts('the conforming presentation', listWith(() => {}));
+        await refuses('3.1 (2): delete issuer type', listWith(doc => {
+          delete doc.issuer.type;
+        }));
+        await refuses('3.1 (3): issuer legalName = 42', listWith(doc => {
+          doc.issuer.legalName = 42;
+        }));
+        await refuses('3.1 (4): issuer image not a URL', listWith(doc => {
+          doc.issuer.image = 'not a url';
+        }));
+        await refuses('3.1 (5): issuer url not a URL', listWith(doc => {
+          doc.issuer.url = 'not a url';
+        }));
+        await refuses('3.1 (6): issuer sameAs not a URL', listWith(doc => {
+          doc.issuer.sameAs = ['not a url'];
+        }));
+        await refuses('3.2 (1): subject type RecognizedIssuer',
+          listWith(doc => {
+            doc.credentialSubject[0].type = 'RecognizedIssuer';
+          }));
+        await refuses('3.2 (2): recognizedIn.id not a URL',
+          credentialWith(doc => {
+            doc.issuer.recognizedIn.id = 'not a url';
+          }));
+        await refuses('3.2 (3): recognizedIn.type = 42', credentialWith(doc => {
+          doc.issuer.recognizedIn.type = 42;
+        }));
+        await refuses('3.2 (5): subject type RecognizedIssuer',
+          listWith(doc => {
+            doc.credentialSubject[0].type = 'RecognizedIssuer';
+          }));
+        await refuses('3.3 (1): recognizedTo.type RecognizedEntity',
+          listWith(doc => {
+            doc.credentialSubject[0].recognizedTo.type =
               'RecognizedEntity';
-                }),
-              ]);
-            expect(reply.status, '3.3 (1)').to.equal(400);
-          });
-        await attempt(
-          failures,
-          '3.3 (2): credentialValidator = []',
-          async () => {
-            const reply =
-              await participate(exchange, [await knownIssuerCredential(),
-                await anchorListWith(doc => {
-                  doc.credentialSubject[0].recognizedTo.credentialValidator =
-              [];
-                }),
-              ]);
-            expect(reply.status, '3.3 (2)').to.equal(400);
-          });
-        await attempt(
-          failures,
-          '3.3 (4): validFrom has milliseconds',
-          async () => {
-            const reply =
-              await participate(exchange, [await knownIssuerCredential(),
-                await anchorListWith(doc => {
-                  doc.credentialSubject[0].recognizedTo.validFrom =
-                  '2025-01-01T00:00:00.500Z';
-                }),
-              ]);
-            expect(reply.status, '3.3 (4)').to.equal(400);
-          });
-        await attempt(
-          failures,
-          '3.3 (6): validUntil 30 days from now',
-          async () => {
-            const reply =
-              await participate(exchange, [await knownIssuerCredential(),
-                await anchorListWith(doc => {
-                  doc.credentialSubject[0].recognizedTo.validUntil =
-                  runtimeDateTime('+01:00');
-                }),
-              ]);
-            expect(reply.status, '3.3 (6)').to.equal(400);
-          });
-        await attempt(
-          failures,
-          '3.4 (1): delete the issuer',
-          async () => {
-            const reply =
-              await participate(exchange, [await knownIssuerCredential(),
-                await anchorListWith(doc => {
-                  delete doc.issuer;
-                }),
-              ]);
-            expect(reply.status, '3.4 (1)').to.equal(400);
-          });
-        await attempt(
-          failures,
-          '3.4 (3): type without RecognizedEntityCredential',
-          async () => {
-            const reply =
-              await participate(exchange, [await knownIssuerCredential(),
-                await anchorListWith(doc => {
-                  doc.type = ['VerifiableCredential'];
-                }),
-              ]);
-            expect(reply.status, '3.4 (3)').to.equal(400);
-          });
-        await attempt(
-          failures,
-          '3.5 (1): delete validator id',
-          async () => {
-            const reply =
-              await participate(exchange, [await knownIssuerCredential(),
-                await anchorListWith(doc => {
-                  delete doc.credentialSubject[0].recognizedTo
-                    .credentialValidator.id;
-                }),
-              ]);
-            expect(reply.status, '3.5 (1)').to.equal(400);
-          });
-        await attempt(
-          failures,
-          '3.5 (2): validator id = schema.json',
-          async () => {
-            const reply =
-              await participate(exchange, [await knownIssuerCredential(),
-                await anchorListWith(doc => {
-                  doc.credentialSubject[0].recognizedTo.credentialValidator.id =
-                  'schema.json';
-                }),
-              ]);
-            expect(reply.status, '3.5 (2)').to.equal(400);
-          });
-        await attempt(
-          failures,
-          '3.5 (4): validator type JsonSchema',
-          async () => {
-            const reply =
-              await participate(exchange, [await knownIssuerCredential(),
-                await anchorListWith(doc => {
-                  doc.credentialSubject[0].recognizedTo
-                    .credentialValidator.type =
-                  'JsonSchema';
-                }),
-              ]);
-            expect(reply.status, '3.5 (4)').to.equal(400);
-          });
-        await attempt(
-          failures,
-          '3.5 (5): delete validator mediaType',
-          async () => {
-            const reply =
-              await participate(exchange, [await knownIssuerCredential(),
-                await anchorListWith(doc => {
-                  delete doc.credentialSubject[0].recognizedTo
-                    .credentialValidator.mediaType;
-                }),
-              ]);
-            expect(reply.status, '3.5 (5)').to.equal(400);
-          });
+          }));
+        await refuses('3.3 (2): credentialValidator = []', listWith(doc => {
+          doc.credentialSubject[0].recognizedTo.credentialValidator = [];
+        }));
+        await refuses('3.3 (4): validFrom has milliseconds', listWith(doc => {
+          doc.credentialSubject[0].recognizedTo.validFrom =
+            '2025-01-01T00:00:00.500Z';
+        }));
+        await refuses('3.3 (6): validUntil 30 days from now', listWith(doc => {
+          doc.credentialSubject[0].recognizedTo.validUntil =
+            runtimeDateTime('+01:00');
+        }));
+        await refuses('3.4 (1): delete the issuer', listWith(doc => {
+          delete doc.issuer;
+        }));
+        await refuses('3.4 (3): type without RecognizedEntityCredential',
+          listWith(doc => {
+            doc.type = ['VerifiableCredential'];
+          }));
+        await refuses('3.5 (1): delete validator id', listWith(doc => {
+          delete doc.credentialSubject[0].recognizedTo.credentialValidator.id;
+        }));
+        await refuses('3.5 (2): validator id = schema.json', listWith(doc => {
+          doc.credentialSubject[0].recognizedTo.credentialValidator.id =
+            'schema.json';
+        }));
+        await refuses('3.5 (4): validator type JsonSchema', listWith(doc => {
+          doc.credentialSubject[0].recognizedTo.credentialValidator.type =
+            'JsonSchema';
+        }));
+        await refuses('3.5 (5): delete validator mediaType', listWith(doc => {
+          delete doc.credentialSubject[0].recognizedTo.credentialValidator
+            .mediaType;
+        }));
         expect(failures, 'checks that failed').to.deep.equal([]);
       });
     });
