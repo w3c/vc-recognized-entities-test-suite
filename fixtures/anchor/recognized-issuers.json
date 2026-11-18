@@ -20,11 +20,7 @@
     "url": "https://anchor.example/",
     "sameAs": [
       "https://anchor.example/entities/test-anchor"
-    ],
-    "recognizedIn": {
-      "id": "https://anchor.example/lists/recognized-issuers.json",
-      "type": "RecognizedEntityCredential"
-    }
+    ]
   },
   "validFrom": "2025-01-01T00:00:00Z",
   "credentialSubject": [
@@ -47,7 +43,7 @@
   ],
   "proof": {
     "type": "DataIntegrityProof",
-    "created": "2026-11-18T21:55:20Z",
+    "created": "2026-11-18T22:00:25Z",
     "verificationMethod": "did:key:z6Mkr4eb4pNsvCF8zQkqwKzeAQFsqEm6Kr3jRyAbkcoMaXKw#z6Mkr4eb4pNsvCF8zQkqwKzeAQFsqEm6Kr3jRyAbkcoMaXKw",
     "cryptosuite": "eddsa-jcs-2022",
     "proofPurpose": "assertionMethod",
@@ -55,6 +51,6 @@
       "https://www.w3.org/ns/credentials/v2",
       "https://www.w3.org/ns/credentials/examples/v2"
     ],
-    "proofValue": "z3vMbiaZkshCwyociE25JRK892e5pPeiCFfuVWirEAaTGuTkgBtek6FRQuDgSRNLJk4cwrv74FLGow1Gk7xUUyaFf"
+    "proofValue": "z3rgcDybXTMQEL6wkKn5PB4P1YDmr851t2kC7Jf54vN4VXv7o6Xxgr7z3RqDnGVsPAy6YZrPRxHNvUcXhtiZQF32m"
   }
 }
