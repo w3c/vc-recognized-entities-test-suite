@@ -52,10 +52,11 @@ export async function attempt(failures, label, run) {
 
 // Exchange -----------------------------------------------------------------
 
-// Participates in an exchange (VCALM, Participate in an Exchange): POSTs
-// {verifiablePresentation} with the given credentials to the exchange URL,
-// and returns the HTTP status. The test holder signs the presentation for
-// authentication, with a fresh challenge and the exchange's origin as domain.
+// POSTs {verifiablePresentation} with the given credentials to the exchange
+// URL, and returns the HTTP status. The body has the shape of a VCALM
+// Participate in an Exchange request; no other exchange step is used. The test
+// holder signs the presentation for authentication, with a fresh challenge and
+// the exchange's origin as domain.
 export async function participate(exchange, credentials) {
   const holder = await holderKey();
   const verifiablePresentation = await signPresentation({

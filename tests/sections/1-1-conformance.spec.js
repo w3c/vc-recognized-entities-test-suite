@@ -2,14 +2,13 @@
  * SPDX-License-Identifier: LicenseRef-w3c-3-clause-bsd-license-2008 OR LicenseRef-w3c-test-suite-license-2023
  */
 
-// Hand-written: scripts/scaffold-tests.mjs does not regenerate this file.
-//
 // Each statement is one test per implementation. Its checks run in order, and
 // their failures are collected, so the test fails once with all of them.
 //
-// 1.1 (2) participates in the verifier's exchange (VCALM, Participate in an
-// Exchange): the conforming presentation must get 200, and each presentation
-// with one section 3 rule broken must get 400 (Invalid input).
+// 1.1 (2) posts signed presentations to the verifier's exchange URL, used only
+// as an endpoint (see the README, "The exchange endpoint"): the conforming
+// presentation must get 200, and each presentation with one section 3 rule
+// broken must get 400.
 
 import {
   anchorListWith, attempt, knownCredentialDocument, knownIssuerCredential,
