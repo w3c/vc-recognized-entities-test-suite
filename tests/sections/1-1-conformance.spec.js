@@ -3,14 +3,10 @@
  */
 
 // Hand-written: scripts/scaffold-tests.mjs does not regenerate this file.
-//
-// Each row is one spec statement, titled with its sentence. The checks are
-// written out below. Each violation is one change made to the known-issuer
-// credential (scripts/make-fixtures.mjs), and the verifier must refuse it.
 
 import {
-  conformingChain, expectAccepted, expectRefused, setupStatementMatrix,
-  statementTests, verifyOn, violationOutcome
+  acceptsConforming, refusesViolation, setupStatementMatrix, statementTests,
+  violationOutcome
 } from '../statement-suite.js';
 import {describe} from 'mocha';
 import {expect} from 'chai';
@@ -59,14 +55,48 @@ describe('1.1 Conformance', function() {
     function() {
       statementTests('1-1-conformance-1', {
         positive: {
-          // the conforming credential is accepted with no errors
-          'the conforming credential is recognized': async name =>
-            expectAccepted(await verifyOn(name, await conformingChain()),
-              'the conforming list')
+          'the conforming credential is recognized': acceptsConforming
         },
-        negative: violationChecks(async (name, key) =>
-          // the credential with this one change is refused
-          expectRefused(await violationOutcome(name, key), key))
+        negative: {
+          '3.1 (2): delete issuer type':
+            name => refusesViolation(name, '3-1-general-properties-2'),
+          '3.1 (3): issuer legalName = 42':
+            name => refusesViolation(name, '3-1-general-properties-3'),
+          '3.1 (4): issuer image not a URL':
+            name => refusesViolation(name, '3-1-general-properties-4'),
+          '3.1 (5): issuer url not a URL':
+            name => refusesViolation(name, '3-1-general-properties-5'),
+          '3.1 (6): issuer sameAs not a URL':
+            name => refusesViolation(name, '3-1-general-properties-6'),
+          '3.2 (1): subject type RecognizedIssuer':
+            name => refusesViolation(name, '3-2-recognizedentity-1'),
+          '3.2 (2): recognizedIn.id not a URL':
+            name => refusesViolation(name, '3-2-recognizedentity-2'),
+          '3.2 (3): recognizedIn.type = 42':
+            name => refusesViolation(name, '3-2-recognizedentity-3'),
+          '3.2 (5): subject type RecognizedIssuer':
+            name => refusesViolation(name, '3-2-recognizedentity-5'),
+          '3.3 (1): recognizedTo.type RecognizedEntity':
+            name => refusesViolation(name, '3-3-recognizedaction-1'),
+          '3.3 (2): credentialValidator = []':
+            name => refusesViolation(name, '3-3-recognizedaction-2'),
+          '3.3 (4): validFrom has milliseconds':
+            name => refusesViolation(name, '3-3-recognizedaction-4'),
+          '3.3 (6): validUntil 30 days from now':
+            name => refusesViolation(name, '3-3-recognizedaction-6'),
+          '3.4 (1): delete the issuer':
+            name => refusesViolation(name, '3-4-recognizedentitycredential-1'),
+          '3.4 (3): type without RecognizedEntityCredential':
+            name => refusesViolation(name, '3-4-recognizedentitycredential-3'),
+          '3.5 (1): delete validator id':
+            name => refusesViolation(name, '3-5-credential-validators-1'),
+          '3.5 (2): validator id = schema.json':
+            name => refusesViolation(name, '3-5-credential-validators-2'),
+          '3.5 (4): validator type JsonSchema':
+            name => refusesViolation(name, '3-5-credential-validators-4'),
+          '3.5 (5): delete validator mediaType':
+            name => refusesViolation(name, '3-5-credential-validators-5')
+        }
       });
     });
 
@@ -74,13 +104,9 @@ describe('1.1 Conformance', function() {
     function() {
       statementTests('1-1-conformance-2', {
         positive: {
-          // the conforming credential produces no errors
-          'the conforming credential produces no errors': async name =>
-            expectAccepted(await verifyOn(name, await conformingChain()),
-              'the conforming list')
+          'the conforming credential produces no errors': acceptsConforming
         },
         negative: violationChecks(async (name, key) => {
-          // the credential with this one change produces at least one error
           const outcome = await violationOutcome(name, key);
           expect(outcome.errors, `${key}: errors`).to.not.be.empty;
         })
