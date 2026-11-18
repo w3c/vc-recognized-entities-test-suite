@@ -51,6 +51,11 @@ describe('3.3 RecognizedAction', function() {
         name, exchange, rowId: '3-3-recognizedaction-3'
       }, async ({accepts, refuses}) => {
         await accepts('the conforming presentation', listWith());
+        await accepts('two validators, both satisfied', listWith(doc => {
+          const action = doc.credentialSubject[0].recognizedTo;
+          action.credentialValidator =
+            [action.credentialValidator, action.credentialValidator];
+        }));
         await refuses('3.3 (3): second validator not satisfied',
           listWith(doc => {
             const action = doc.credentialSubject[0].recognizedTo;

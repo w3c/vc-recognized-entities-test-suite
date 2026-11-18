@@ -106,6 +106,10 @@ describe('1.1 Conformance', function() {
         await refuses('3.5 (5): validator mediaType deleted', listWith(doc => {
           delete validatorOf(doc).mediaType;
         }));
+        await refuses('3.5 (5): validator mediaType text/plain',
+          listWith(doc => {
+            validatorOf(doc).mediaType = 'text/plain';
+          }));
       });
     });
   }
