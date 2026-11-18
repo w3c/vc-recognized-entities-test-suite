@@ -70,7 +70,7 @@ function expectAccepted(outcome, message) {
     .to.deep.equal([]);
 }
 
-function expectRefused(outcome, message) {
+export function expectRefused(outcome, message) {
   const refused = !(outcome.recognized && outcome.actionRecognized) ||
     outcome.errors.length > 0;
   expect(refused, `${message}: must not be recognized, or must report an ` +
@@ -95,7 +95,7 @@ async function conformingChain() {
   return [known, conformingList];
 }
 
-async function acceptsConforming(name) {
+export async function acceptsConforming(name) {
   expectAccepted(await verifyOn(name, await conformingChain()),
     'the conforming list');
 }
@@ -114,7 +114,7 @@ async function refusesViolation(name, key) {
     `the violation of ${key}`);
 }
 
-async function eachViolationList(name, check) {
+export async function eachViolationList(name, check) {
   const known = await readFixture('signed/known-issuer-credential.json');
   const {violationLists} = await shapesForTests();
   const files = Object.keys(violationLists);
@@ -256,6 +256,17 @@ class Skip extends Error {}
 const positive = (label, run) => ({kind: 'positive', label, run});
 const negative = (label, run) => ({kind: 'negative', label, run});
 
+// Explicit checks written in a section file, as { positive: {label: run},
+// negative: {label: run} }. Each run takes the implementation name.
+function subtestsFrom(checks) {
+  return name => [
+    ...Object.entries(checks.positive ?? {}).map(([label, run]) =>
+      positive(label, () => run(name))),
+    ...Object.entries(checks.negative ?? {}).map(([label, run]) =>
+      negative(label, () => run(name)))
+  ];
+}
+
 // The subtests of each statement. A statement with no entry here is a
 // section 3 statement: its positive is the conforming list, and its negative
 // the violation fixture of that statement.
@@ -266,15 +277,6 @@ const SUBTESTS = {
       () => acceptsConforming(name)),
     negative('every violation list is refused', () => eachViolationList(name,
       (outcome, file) => expectRefused(outcome, file)))
-  ],
-  // 1.1 (2): "Conforming processors MUST produce errors when non-conforming
-  // documents are consumed."
-  '1-1-conformance-2': name => [
-    positive('the conforming list produces no errors',
-      () => acceptsConforming(name)),
-    negative('every violation list produces at least one error',
-      () => eachViolationList(name, (outcome, file) =>
-        expect(outcome.errors, `${file}: errors`).to.not.be.empty))
   ],
   // 3.3 (3): every validator must be satisfied. A controlled pair: two lists
   // that differ only in whether one validator rejects.
@@ -414,17 +416,19 @@ function registerRowText(key, text) {
  * them. A cell with no negative, or no positive, fails as incomplete.
  *
  * @param {string} key - Statement key, such as '3-2-recognizedentity-1'.
+ * @param {object} [checks] - Explicit checks for the row; see the section file.
  */
-export function statementTests(key) {
+export function statementTests(key, checks = null) {
   // the statement is the spec sentence, verbatim
   const statement = NORMATIVE[key];
   registerRowText(key, statement);
+  const buildSubtests = checks ? subtestsFrom(checks) : name =>
+    SUBTESTS[key] ? SUBTESTS[key](name) : section3Subtests(name, key);
   for(const name of implementationNames()) {
     it(`[MUST] ${statement}`, async function() {
       this.test.cell = {columnId: name, rowId: key, statement};
       this.test.link = LINK[key];
-      const subtests = SUBTESTS[key] ?
-        SUBTESTS[key](name) : section3Subtests(name, key);
+      const subtests = buildSubtests(name);
       const kinds = new Set(subtests.map(subtest => subtest.kind));
       const problems = [];
       for(const kind of ['positive', 'negative']) {

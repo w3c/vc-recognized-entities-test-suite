@@ -73,17 +73,23 @@ export function renderSection(section, keys) {
   return lines.join('\n');
 }
 
+// Sections written by hand. The generator leaves these files alone.
+export const HAND_WRITTEN = new Set(['1-1-conformance.spec.js']);
+
 export function main() {
   fs.mkdirSync(outDir, {recursive: true});
   for(const f of fs.readdirSync(outDir)) {
-    if(f.endsWith('.spec.js')) {
+    if(f.endsWith('.spec.js') && !HAND_WRITTEN.has(f)) {
       fs.unlinkSync(path.join(outDir, f));
     }
   }
   const groups = groupBySection();
   for(const [section, keys] of groups) {
-    const file = path.join(outDir, `${slugify(section)}.spec.js`);
-    fs.writeFileSync(file, renderSection(section, keys));
+    const name = `${slugify(section)}.spec.js`;
+    if(HAND_WRITTEN.has(name)) {
+      continue;
+    }
+    fs.writeFileSync(path.join(outDir, name), renderSection(section, keys));
   }
   console.log(`wrote ${groups.size} section files, ` +
     `${testedKeys().length} statement rows ` +
