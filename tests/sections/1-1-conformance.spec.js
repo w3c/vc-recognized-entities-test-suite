@@ -23,23 +23,23 @@ import {NORMATIVE} from '../normative-statements.js';
 
 // Verifiers tagged for this suite. Each one gets its own describe below.
 const tag = 'recognized-entities';
-const {match} = filterByTag({tags: [tag], property: 'verifiers'});
-// The verifier exchange of each implementation: the exchange field on its
-// tagged verifier entry. Without it, the test is skipped.
-const verifierExchange = name => match.get(name).settings.verifiers
-  .find(v => v.tags?.includes(tag))?.exchange;
+const {match: verifierImplementations} = filterByTag(
+  {tags: [tag], property: 'verifiers'});
 
 describe('1.1 Conformance', function() {
-  setupStatementMatrix(this, match.keys());
+  setupStatementMatrix(this, verifierImplementations.keys());
 
-  for(const name of match.keys()) {
+  for(const name of verifierImplementations.keys()) {
+    // The exchange field on this implementation's tagged verifier entry.
+    // Without it, the test is skipped.
+    const exchange = verifierImplementations.get(name).settings.verifiers
+      .find(v => v.tags?.includes(tag))?.exchange;
     describe(name, function() {
       it(`${NORMATIVE['1-1-conformance-2']}`, async function() {
         this.test.cell = {columnId: name, rowId: '1-1-conformance-2',
           statement: NORMATIVE['1-1-conformance-2']};
         this.test.link = LINK['1-1-conformance-2'];
         recordRow('1-1-conformance-2', NORMATIVE['1-1-conformance-2']);
-        const exchange = verifierExchange(name);
         if(!exchange) {
           this.test.cell.skipMessage = 'no verifier exchange configured';
           this.skip();
