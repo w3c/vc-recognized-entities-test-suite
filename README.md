@@ -60,3 +60,33 @@ The test DIDs are `did:key` identifiers. The credentials use the
 `https://www.w3.org/ns/credentials/examples/v2` contexts. The Recognized
 Entities context is not published yet, so the examples context covers its
 terms.
+
+## Report
+
+`npm test` writes the interoperability report to `reports/index.html` and
+`reports/index.json`, using
+[mocha-w3c-interop-reporter](https://github.com/digitalbazaar/mocha-w3c-interop-reporter).
+
+The report uses its own templates in `templates/`, in place of the reporter's
+built-in ones. They are loaded by the `test` script (`--require` and the
+`metrics` and `matrix` reporter options):
+
+- `templates/metrics.hbs` places each section's results under the
+  specification's headings, in the order of its table of contents. A heading
+  is shown only when it has results. A new section needs its own slot here,
+  or its results appear under "Other Results".
+- `templates/matrix.hbs` is the reporter's results table, with a short title
+  for each row and the full statement, with its RFC 2119 keywords marked, on
+  hover.
+- `templates/register-helpers.cjs` holds the Handlebars helpers these
+  templates use. The statement text of an at-risk row comes from `recordRow`
+  in `tests/helpers.js`.
+
+Two things are still open:
+
+- The custom templates have not yet been checked with
+  [canivc](https://canivc.com/), which reads the reports of the VC test
+  suites. It needs to be confirmed that it still reads this suite's results.
+- Some of these changes, such as the hover text and the keyword marking, may
+  belong in the reporter itself, so that other suites can use them without
+  their own templates.
