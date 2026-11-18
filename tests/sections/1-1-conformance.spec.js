@@ -11,7 +11,7 @@
 // broken must get 400.
 
 import {
-  attempt, credentialWith, listWith, participate, recordRow, runtimeDateTime,
+  credentialWith, exchangeChecks, listWith, recordRow, runtimeDateTime,
   setupStatementMatrix
 } from '../helpers.js';
 import {describe, it} from 'mocha';
@@ -48,13 +48,7 @@ describe('1.1 Conformance', function() {
         const failures = [];
         // Sends the presentation to the verifier exchange; it must be
         // accepted (200) or refused as invalid input (400).
-        const sends = (label, status, documents) => attempt(
-          failures, label, async () => {
-            const reply = await participate(exchange, await documents());
-            expect(reply.status, label).to.equal(status);
-          });
-        const accepts = (label, documents) => sends(label, 200, documents);
-        const refuses = (label, documents) => sends(label, 400, documents);
+        const {accepts, refuses} = exchangeChecks(exchange, {failures});
 
         await accepts('the conforming presentation', listWith(() => {}));
         await refuses('3.1 (2): delete issuer type', listWith(doc => {

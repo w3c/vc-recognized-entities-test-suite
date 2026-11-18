@@ -76,6 +76,24 @@ export async function participate(exchange, credentials) {
   return {status: response.status};
 }
 
+// The accepts and refuses checks for one exchange. Each sends the
+// presentation that `documents` builds, and expects 200 (accepts) or 400
+// (refuses). With `failures`, a failed check is recorded there under its
+// label, and the test goes on (see attempt). Without it, the check throws.
+export function exchangeChecks(exchange, {failures} = {}) {
+  const sends = (label, status, documents) => {
+    const check = async message => {
+      const reply = await participate(exchange, await documents());
+      expect(reply.status, message).to.equal(status);
+    };
+    return failures ? attempt(failures, label, () => check()) : check(label);
+  };
+  return {
+    accepts: (label, documents) => sends(label, 200, documents),
+    refuses: (label, documents) => sends(label, 400, documents)
+  };
+}
+
 // Statement tests ----------------------------------------------------------
 
 // One test for one statement and one implementation: the conforming
@@ -91,11 +109,9 @@ export function statementTest({name, exchange, rowId, broken}) {
       this.test.cell.skipMessage = 'no verifier exchange configured';
       this.skip();
     }
-    const conforming = await participate(exchange, await listWith()());
-    expect(conforming.status, 'the conforming presentation').to.equal(200);
-    const refused = await participate(exchange, await broken());
-    expect(refused.status, 'the presentation with the statement broken')
-      .to.equal(400);
+    const {accepts, refuses} = exchangeChecks(exchange);
+    await accepts('the conforming presentation', listWith());
+    await refuses('the presentation with the statement broken', broken);
   });
 }
 
