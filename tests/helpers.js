@@ -6,8 +6,10 @@
 // the documents the tests send.
 
 import {
-  CREDENTIALS_V2, DATA_INTEGRITY_CONTEXT, keyFromLabel, sign, TEST_CONTEXT_URL
+  CREDENTIALS_V2, DATA_INTEGRITY_CONTEXT, keyFromLabel, sign, signPresentation,
+  TEST_CONTEXT_URL
 } from './signing.js';
+import {randomUUID} from 'node:crypto';
 import {readFile} from 'node:fs/promises';
 
 const ANCHOR_LIST_URL =
@@ -16,6 +18,7 @@ const CONTEXT = [CREDENTIALS_V2, DATA_INTEGRITY_CONTEXT, TEST_CONTEXT_URL];
 
 const anchorKey = () => keyFromLabel('vc-recognized-entities test anchor');
 const issuerKey = () => keyFromLabel('vc-recognized-entities test issuer');
+const holderKey = () => keyFromLabel('vc-recognized-entities test holder');
 
 // Report matrix ------------------------------------------------------------
 
@@ -51,18 +54,20 @@ export async function attempt(failures, label, run) {
 
 // Participates in an exchange (VCALM, Participate in an Exchange): POSTs
 // {verifiablePresentation} with the given credentials to the exchange URL,
-// and returns the HTTP status.
+// and returns the HTTP status. The test holder signs the presentation for
+// authentication, with a fresh challenge and the exchange's origin as domain.
 export async function participate(exchange, credentials) {
+  const holder = await holderKey();
+  const verifiablePresentation = await signPresentation({
+    '@context': [CREDENTIALS_V2],
+    type: ['VerifiablePresentation'],
+    holder: holder.did,
+    verifiableCredential: credentials
+  }, holder, {challenge: randomUUID(), domain: new URL(exchange).origin});
   const response = await fetch(exchange, {
     method: 'POST',
     headers: {'content-type': 'application/json'},
-    body: JSON.stringify({
-      verifiablePresentation: {
-        '@context': [CREDENTIALS_V2],
-        type: ['VerifiablePresentation'],
-        verifiableCredential: credentials
-      }
-    })
+    body: JSON.stringify({verifiablePresentation})
   });
   return {status: response.status};
 }

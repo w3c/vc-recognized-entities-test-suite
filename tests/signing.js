@@ -17,7 +17,9 @@ import {createHash} from 'node:crypto';
 import {DataIntegrityProof} from '@digitalbazaar/data-integrity';
 import jsonldSignatures from 'jsonld-signatures';
 
-const {purposes: {AssertionProofPurpose}} = jsonldSignatures;
+const {
+  purposes: {AssertionProofPurpose, AuthenticationProofPurpose}
+} = jsonldSignatures;
 
 export const CREDENTIALS_V2 = 'https://www.w3.org/ns/credentials/v2';
 export const DATA_INTEGRITY_CONTEXT = 'https://w3id.org/security/data-integrity/v2';
@@ -58,7 +60,8 @@ export function didDocumentFor(did) {
       controller: did,
       publicKeyMultibase
     }],
-    assertionMethod: [id]
+    assertionMethod: [id],
+    authentication: [id]
   };
 }
 
@@ -78,15 +81,26 @@ export async function documentLoader(url) {
   return {contextUrl: null, documentUrl: url, document};
 }
 
-// Signs a document with eddsa-jcs-2022.
-export async function sign(document, {key}) {
+// Signs a document with eddsa-jcs-2022. The proof purpose defaults to
+// assertionMethod.
+export async function sign(
+  document, {key}, {purpose = new AssertionProofPurpose()} = {}) {
   const suite = new DataIntegrityProof({
     signer: key.signer(), cryptosuite: createSignCryptosuite()
   });
   const proof = await suite.createProof({
-    document, purpose: new AssertionProofPurpose(), documentLoader
+    document, purpose, documentLoader
   });
   return {...document, proof};
+}
+
+// Signs a presentation for authentication, with the given challenge and
+// domain.
+export async function signPresentation(presentation, signer,
+  {challenge, domain}) {
+  return sign(presentation, signer, {
+    purpose: new AuthenticationProofPurpose({challenge, domain})
+  });
 }
 
 // The suite list a caller passes to verification.
