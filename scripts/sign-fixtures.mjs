@@ -16,14 +16,11 @@
 
 import {
   anchorListWith, CONFORMING_VALIDATOR_CODE, CREDENTIAL_SUBJECT_SCHEMA,
-  knownCredentialDocument, validatorOf
+  FIXTURES_URL, knownCredentialDocument, validatorOf
 } from '../tests/helpers.js';
 import {mkdir, writeFile} from 'node:fs/promises';
 
-const BASE =
-  'https://w3c.github.io/vc-recognized-entities-test-suite/fixtures/';
-const LIST_URL = BASE + 'anchor/recognized-issuers.json';
-const SCHEMA_URL = BASE + 'validators/credential-subject.schema.json';
+const SCHEMA_URL = FIXTURES_URL + 'validators/credential-subject.schema.json';
 
 const out = new URL('../fixtures/', import.meta.url);
 
@@ -36,18 +33,15 @@ async function write(path, text) {
 
 const json = document => JSON.stringify(document, null, 2) + '\n';
 
-// The anchor's conforming list, at its hosted URL, with the hosted schema as
-// its credential validator.
+// The anchor's conforming list, with the hosted schema as its credential
+// validator. The tests use the same list with the schema as a data: URL.
 await write('anchor/recognized-issuers.json', json(await anchorListWith(doc => {
-  doc.id = LIST_URL;
   validatorOf(doc).id = SCHEMA_URL;
 })));
 
 // The known issuer credential, recognized in the hosted list.
-await write('known-issuer-credential.json', json(
-  await knownCredentialDocument(doc => {
-    doc.issuer.recognizedIn.id = LIST_URL;
-  })));
+await write('known-issuer-credential.json',
+  json(await knownCredentialDocument()));
 
 // The validator files.
 await write('validators/credential-subject.schema.json',
