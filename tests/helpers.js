@@ -6,15 +6,14 @@
 // the documents the tests send.
 
 import {
-  CREDENTIALS_V2, DATA_INTEGRITY_CONTEXT, EXAMPLES_CONTEXT_URL, keyFromLabel,
-  sign, signPresentation
+  CREDENTIALS_V2, EXAMPLES_CONTEXT_URL, keyFromLabel, sign, signPresentation
 } from './signing.js';
 import {randomUUID} from 'node:crypto';
 import {readFile} from 'node:fs/promises';
 
 const ANCHOR_LIST_URL =
   'https://anchor.example/credentials/recognized-issuers.json';
-const CONTEXT = [CREDENTIALS_V2, DATA_INTEGRITY_CONTEXT, EXAMPLES_CONTEXT_URL];
+const CONTEXT = [CREDENTIALS_V2, EXAMPLES_CONTEXT_URL];
 
 const anchorKey = () => keyFromLabel('vc-recognized-entities test anchor');
 const issuerKey = () => keyFromLabel('vc-recognized-entities test issuer');

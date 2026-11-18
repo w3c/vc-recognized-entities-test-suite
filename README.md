@@ -56,8 +56,7 @@ The body has the shape of the VCALM "Participate in an Exchange" request.
   status code.
 
 The test DIDs are `did:key` identifiers. The credentials use the
-`https://www.w3.org/ns/credentials/v2`,
-`https://w3id.org/security/data-integrity/v2` and
+`https://www.w3.org/ns/credentials/v2` and
 `https://www.w3.org/ns/credentials/examples/v2` contexts. The Recognized
 Entities context is not published yet, so the examples context covers its
 terms.

@@ -8,7 +8,6 @@
 // needed. Verification uses the vc library, as verifiers do.
 
 import * as credentialsContext from '@digitalbazaar/credentials-context';
-import * as dataIntegrityContext from '@digitalbazaar/data-integrity-context';
 import * as Ed25519Multikey from '@digitalbazaar/ed25519-multikey';
 import {
   createSignCryptosuite, createVerifyCryptosuite
@@ -22,7 +21,6 @@ const {
 } = jsonldSignatures;
 
 export const CREDENTIALS_V2 = 'https://www.w3.org/ns/credentials/v2';
-export const DATA_INTEGRITY_CONTEXT = 'https://w3id.org/security/data-integrity/v2';
 // The W3C examples context, published at its URL. Its @vocab covers the
 // Recognized Entities terms, whose own context is not published yet.
 export const EXAMPLES_CONTEXT_URL =
@@ -34,7 +32,6 @@ export const EXAMPLES_CONTEXT = {
 const toEntries = c => c instanceof Map ? [...c] : Object.entries(c);
 const LOCAL = new Map([
   ...toEntries(credentialsContext.contexts),
-  ...toEntries(dataIntegrityContext.contexts),
   [EXAMPLES_CONTEXT_URL, EXAMPLES_CONTEXT]
 ]);
 
