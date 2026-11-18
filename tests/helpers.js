@@ -96,11 +96,10 @@ export function exchangeChecks(exchange, {failures} = {}) {
 
 // Statement tests ----------------------------------------------------------
 
-// One test for one statement and one implementation: the conforming
-// presentation must get 200, and the presentation with the statement broken
-// must get 400. `broken` builds the credentials of that presentation (see
-// listWith and credentialWith). Skipped when the verifier has no exchange.
-export function statementTest({name, exchange, rowId, broken}) {
+// One test for one statement and one implementation. It fills the report
+// cell, skips when the verifier has no exchange, and runs `checks` with the
+// accepts and refuses checks for that exchange.
+export function statementTest({name, exchange, rowId}, checks) {
   it(NORMATIVE[rowId], async function() {
     this.test.cell = {columnId: name, rowId, statement: NORMATIVE[rowId]};
     this.test.link = LINK[rowId];
@@ -109,9 +108,7 @@ export function statementTest({name, exchange, rowId, broken}) {
       this.test.cell.skipMessage = 'no verifier exchange configured';
       this.skip();
     }
-    const {accepts, refuses} = exchangeChecks(exchange);
-    await accepts('the conforming presentation', listWith());
-    await refuses('the presentation with the statement broken', broken);
+    await checks(exchangeChecks(exchange));
   });
 }
 

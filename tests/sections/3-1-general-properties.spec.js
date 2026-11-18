@@ -24,36 +24,46 @@ describe('3.1 General Properties', function() {
     const exchange = verifierImplementations.get(name).settings.verifiers
       .find(v => v.tags?.includes(tag))?.exchange;
     describe(name, function() {
+      // The anchor is an issuer, but its issuer object has no type.
       statementTest({
-        name, exchange, rowId: '3-1-general-properties-2',
-        // The anchor is an issuer, but its issuer object has no type.
-        broken: listWith(doc => {
+        name, exchange, rowId: '3-1-general-properties-2'
+      }, async ({accepts, refuses}) => {
+        await accepts('the conforming presentation', listWith());
+        await refuses('issuer type deleted', listWith(doc => {
           delete doc.issuer.type;
-        })
+        }));
       });
       statementTest({
-        name, exchange, rowId: '3-1-general-properties-3',
-        broken: listWith(doc => {
+        name, exchange, rowId: '3-1-general-properties-3'
+      }, async ({accepts, refuses}) => {
+        await accepts('the conforming presentation', listWith());
+        await refuses('issuer legalName = 42', listWith(doc => {
           doc.issuer.legalName = 42;
-        })
+        }));
       });
       statementTest({
-        name, exchange, rowId: '3-1-general-properties-4',
-        broken: listWith(doc => {
+        name, exchange, rowId: '3-1-general-properties-4'
+      }, async ({accepts, refuses}) => {
+        await accepts('the conforming presentation', listWith());
+        await refuses('issuer image not a URL', listWith(doc => {
           doc.issuer.image = 'not a url';
-        })
+        }));
       });
       statementTest({
-        name, exchange, rowId: '3-1-general-properties-5',
-        broken: listWith(doc => {
+        name, exchange, rowId: '3-1-general-properties-5'
+      }, async ({accepts, refuses}) => {
+        await accepts('the conforming presentation', listWith());
+        await refuses('issuer url not a URL', listWith(doc => {
           doc.issuer.url = 'not a url';
-        })
+        }));
       });
       statementTest({
-        name, exchange, rowId: '3-1-general-properties-6',
-        broken: listWith(doc => {
+        name, exchange, rowId: '3-1-general-properties-6'
+      }, async ({accepts, refuses}) => {
+        await accepts('the conforming presentation', listWith());
+        await refuses('issuer sameAs not a URL', listWith(doc => {
           doc.issuer.sameAs = ['not a url'];
-        })
+        }));
       });
     });
   }

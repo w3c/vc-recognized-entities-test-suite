@@ -27,32 +27,40 @@ describe('3.2 RecognizedEntity', function() {
       .find(v => v.tags?.includes(tag))?.exchange;
     describe(name, function() {
       statementTest({
-        name, exchange, rowId: '3-2-recognizedentity-1',
-        broken: listWith(doc => {
+        name, exchange, rowId: '3-2-recognizedentity-1'
+      }, async ({accepts, refuses}) => {
+        await accepts('the conforming presentation', listWith());
+        await refuses('subject type RecognizedIssuer', listWith(doc => {
           doc.credentialSubject[0].type = 'RecognizedIssuer';
-        })
+        }));
       });
       // 3.2 (2) and (3) are about the recognizedIn object on the credential's
       // issuer, so the change goes to the credential.
       statementTest({
-        name, exchange, rowId: '3-2-recognizedentity-2',
-        broken: credentialWith(doc => {
+        name, exchange, rowId: '3-2-recognizedentity-2'
+      }, async ({accepts, refuses}) => {
+        await accepts('the conforming presentation', listWith());
+        await refuses('recognizedIn.id not a URL', credentialWith(doc => {
           doc.issuer.recognizedIn.id = 'not a url';
-        })
+        }));
       });
       statementTest({
-        name, exchange, rowId: '3-2-recognizedentity-3',
-        broken: credentialWith(doc => {
+        name, exchange, rowId: '3-2-recognizedentity-3'
+      }, async ({accepts, refuses}) => {
+        await accepts('the conforming presentation', listWith());
+        await refuses('recognizedIn.type = 42', credentialWith(doc => {
           doc.issuer.recognizedIn.type = 42;
-        })
+        }));
       });
       // The list is a RecognizedEntityCredential that breaks one rule of the
       // specification.
       statementTest({
-        name, exchange, rowId: '3-2-recognizedentity-5',
-        broken: listWith(doc => {
+        name, exchange, rowId: '3-2-recognizedentity-5'
+      }, async ({accepts, refuses}) => {
+        await accepts('the conforming presentation', listWith());
+        await refuses('subject type RecognizedIssuer', listWith(doc => {
           doc.credentialSubject[0].type = 'RecognizedIssuer';
-        })
+        }));
       });
     });
   }

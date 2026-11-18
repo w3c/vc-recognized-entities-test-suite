@@ -29,28 +29,36 @@ describe('3.5 Credential Validators', function() {
       .find(v => v.tags?.includes(tag))?.exchange;
     describe(name, function() {
       statementTest({
-        name, exchange, rowId: '3-5-credential-validators-1',
-        broken: listWith(doc => {
+        name, exchange, rowId: '3-5-credential-validators-1'
+      }, async ({accepts, refuses}) => {
+        await accepts('the conforming presentation', listWith());
+        await refuses('validator id deleted', listWith(doc => {
           delete validatorOf(doc).id;
-        })
+        }));
       });
       statementTest({
-        name, exchange, rowId: '3-5-credential-validators-2',
-        broken: listWith(doc => {
+        name, exchange, rowId: '3-5-credential-validators-2'
+      }, async ({accepts, refuses}) => {
+        await accepts('the conforming presentation', listWith());
+        await refuses('validator id = schema.json', listWith(doc => {
           validatorOf(doc).id = 'schema.json';
-        })
+        }));
       });
       statementTest({
-        name, exchange, rowId: '3-5-credential-validators-4',
-        broken: listWith(doc => {
+        name, exchange, rowId: '3-5-credential-validators-4'
+      }, async ({accepts, refuses}) => {
+        await accepts('the conforming presentation', listWith());
+        await refuses('validator type JsonSchema', listWith(doc => {
           validatorOf(doc).type = 'JsonSchema';
-        })
+        }));
       });
       statementTest({
-        name, exchange, rowId: '3-5-credential-validators-5',
-        broken: listWith(doc => {
+        name, exchange, rowId: '3-5-credential-validators-5'
+      }, async ({accepts, refuses}) => {
+        await accepts('the conforming presentation', listWith());
+        await refuses('validator mediaType deleted', listWith(doc => {
           delete validatorOf(doc).mediaType;
-        })
+        }));
       });
     });
   }

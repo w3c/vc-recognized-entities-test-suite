@@ -27,16 +27,21 @@ describe('3.4 RecognizedEntityCredential', function() {
       // A verifiable credential without an issuer does not conform to the
       // Verifiable Credentials Data Model.
       statementTest({
-        name, exchange, rowId: '3-4-recognizedentitycredential-1',
-        broken: listWith(doc => {
+        name, exchange, rowId: '3-4-recognizedentitycredential-1'
+      }, async ({accepts, refuses}) => {
+        await accepts('the conforming presentation', listWith());
+        await refuses('issuer deleted', listWith(doc => {
           delete doc.issuer;
-        })
+        }));
       });
       statementTest({
-        name, exchange, rowId: '3-4-recognizedentitycredential-3',
-        broken: listWith(doc => {
-          doc.type = ['VerifiableCredential'];
-        })
+        name, exchange, rowId: '3-4-recognizedentitycredential-3'
+      }, async ({accepts, refuses}) => {
+        await accepts('the conforming presentation', listWith());
+        await refuses('type without RecognizedEntityCredential',
+          listWith(doc => {
+            doc.type = ['VerifiableCredential'];
+          }));
       });
     });
   }

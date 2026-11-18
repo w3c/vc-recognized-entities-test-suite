@@ -37,40 +37,50 @@ describe('3.3 RecognizedAction', function() {
       .find(v => v.tags?.includes(tag))?.exchange;
     describe(name, function() {
       statementTest({
-        name, exchange, rowId: '3-3-recognizedaction-1',
-        broken: listWith(doc => {
+        name, exchange, rowId: '3-3-recognizedaction-1'
+      }, async ({accepts, refuses}) => {
+        await accepts('the conforming presentation', listWith());
+        await refuses('recognizedTo.type RecognizedEntity', listWith(doc => {
           doc.credentialSubject[0].recognizedTo.type = 'RecognizedEntity';
-        })
+        }));
       });
       statementTest({
-        name, exchange, rowId: '3-3-recognizedaction-2',
-        broken: listWith(doc => {
+        name, exchange, rowId: '3-3-recognizedaction-2'
+      }, async ({accepts, refuses}) => {
+        await accepts('the conforming presentation', listWith());
+        await refuses('credentialValidator = []', listWith(doc => {
           doc.credentialSubject[0].recognizedTo.credentialValidator = [];
-        })
+        }));
       });
       // Two validators: the credential satisfies the first, not the second.
       statementTest({
-        name, exchange, rowId: '3-3-recognizedaction-3',
-        broken: listWith(doc => {
+        name, exchange, rowId: '3-3-recognizedaction-3'
+      }, async ({accepts, refuses}) => {
+        await accepts('the conforming presentation', listWith());
+        await refuses('second validator not satisfied', listWith(doc => {
           const action = doc.credentialSubject[0].recognizedTo;
           action.credentialValidator =
             [action.credentialValidator, unsatisfiedValidator];
-        })
+        }));
       });
       statementTest({
-        name, exchange, rowId: '3-3-recognizedaction-4',
-        broken: listWith(doc => {
+        name, exchange, rowId: '3-3-recognizedaction-4'
+      }, async ({accepts, refuses}) => {
+        await accepts('the conforming presentation', listWith());
+        await refuses('validFrom has milliseconds', listWith(doc => {
           doc.credentialSubject[0].recognizedTo.validFrom =
             '2025-01-01T00:00:00.500Z';
-        })
+        }));
       });
       // validUntil is in the future, so only its time zone breaks the rule.
       statementTest({
-        name, exchange, rowId: '3-3-recognizedaction-6',
-        broken: listWith(doc => {
+        name, exchange, rowId: '3-3-recognizedaction-6'
+      }, async ({accepts, refuses}) => {
+        await accepts('the conforming presentation', listWith());
+        await refuses('validUntil not in UTC', listWith(doc => {
           doc.credentialSubject[0].recognizedTo.validUntil =
             runtimeDateTime('+01:00');
-        })
+        }));
       });
     });
   }
