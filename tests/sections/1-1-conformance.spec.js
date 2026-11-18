@@ -30,7 +30,7 @@ describe.skip('1.1 Conformance', function() {
 
   for(const name of match.keys()) {
     describe(name, function() {
-      it(`[MUST] ${NORMATIVE['1-1-conformance-2']}`, async function() {
+      it(`${NORMATIVE['1-1-conformance-2']}`, async function() {
         this.test.cell = {columnId: name, rowId: '1-1-conformance-2',
           statement: NORMATIVE['1-1-conformance-2']};
         const failures = [];
