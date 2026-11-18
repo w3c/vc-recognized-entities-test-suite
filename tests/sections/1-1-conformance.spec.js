@@ -25,6 +25,9 @@ const tag = 'recognized-entities';
 const {match: verifierImplementations} = filterByTag(
   {tags: [tag], property: 'verifiers'});
 
+// The statement this file tests: its row in the report.
+const rowId = '1-1-conformance-2';
+
 describe('1.1 Conformance', function() {
   setupStatementMatrix(this, verifierImplementations.keys());
 
@@ -34,11 +37,10 @@ describe('1.1 Conformance', function() {
     const exchange = verifierImplementations.get(name).settings.verifiers
       .find(v => v.tags?.includes(tag))?.exchange;
     describe(name, function() {
-      it(`${NORMATIVE['1-1-conformance-2']}`, async function() {
-        this.test.cell = {columnId: name, rowId: '1-1-conformance-2',
-          statement: NORMATIVE['1-1-conformance-2']};
-        this.test.link = LINK['1-1-conformance-2'];
-        recordRow('1-1-conformance-2', NORMATIVE['1-1-conformance-2']);
+      it(NORMATIVE[rowId], async function() {
+        this.test.cell = {columnId: name, rowId, statement: NORMATIVE[rowId]};
+        this.test.link = LINK[rowId];
+        recordRow(rowId, NORMATIVE[rowId]);
         if(!exchange) {
           this.test.cell.skipMessage = 'no verifier exchange configured';
           this.skip();
