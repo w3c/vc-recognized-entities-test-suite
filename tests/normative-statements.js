@@ -27,7 +27,7 @@ export const NORMATIVE = {
     'of verifiable credentials.',
   // 3.1 General Properties
   '3-1-general-properties-3':
-    'The value MUST be a one or more strings or language value objects, as ' +
+    'The value MUST be one or more strings or language value objects, as ' +
     'described in Section 11.1: Language and Base Direction of the ' +
     'Verifiable Credentials Data Model v2.0 specification.',
   // 3.1 General Properties
