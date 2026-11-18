@@ -77,6 +77,28 @@ hidden.
 </section>
 {{/ifMatrix}}
 
+{{#ifMatrix "Credential Validation" "JavaScript Validator Processing" "JavaScript Credential Validation Function"}}
+<section id="algorithms">
+  <h2>4 Algorithms</h2>
+  <section id="credential-validation">
+    <h3>4.4 Credential Validation</h3>
+    {{#matrixByTitle "Credential Validation"}}{{> matrix.hbs matrix=. bare=true}}{{/matrixByTitle}}
+    {{#ifMatrix "JavaScript Validator Processing" "JavaScript Credential Validation Function"}}
+    <section id="javascript-validator-processing">
+      <h4>4.4.1 JavaScript Validator Processing</h4>
+      {{#matrixByTitle "JavaScript Validator Processing"}}{{> matrix.hbs matrix=. bare=true}}{{/matrixByTitle}}
+      {{#ifMatrix "JavaScript Credential Validation Function"}}
+      <section id="javascript-credential-validation-function">
+        <h5>4.4.1.1 JavaScript Credential Validation Function</h5>
+        {{#matrixByTitle "JavaScript Credential Validation Function"}}{{> matrix.hbs matrix=. bare=true}}{{/matrixByTitle}}
+      </section>
+      {{/ifMatrix}}
+    </section>
+    {{/ifMatrix}}
+  </section>
+</section>
+{{/ifMatrix}}
+
 {{#if (unplacedMatrices)}}
 <section id="other-results">
   <h2>Other Results</h2>
