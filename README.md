@@ -55,6 +55,9 @@ The body has the shape of the VCALM "Participate in an Exchange" request.
   of the specification, and `400` when it does not. The suite checks only the
   status code.
 
-The test DIDs are `did:key` identifiers, and the credentials use the test
-context `https://anchor.example/contexts/recognized-entities-test/v1`. Your
-verifier needs to resolve both without network access to `anchor.example`.
+The test DIDs are `did:key` identifiers. The credentials use the
+`https://www.w3.org/ns/credentials/v2`,
+`https://w3id.org/security/data-integrity/v2` and
+`https://www.w3.org/ns/credentials/examples/v2` contexts. The Recognized
+Entities context is not published yet, so the examples context covers its
+terms.

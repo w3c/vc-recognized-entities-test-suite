@@ -23,17 +23,19 @@ const {
 
 export const CREDENTIALS_V2 = 'https://www.w3.org/ns/credentials/v2';
 export const DATA_INTEGRITY_CONTEXT = 'https://w3id.org/security/data-integrity/v2';
-export const TEST_CONTEXT_URL =
-  'https://anchor.example/contexts/recognized-entities-test/v1';
-export const TEST_CONTEXT = {
-  '@context': {'@vocab': 'https://anchor.example/vocab/'}
+// The W3C examples context, published at its URL. Its @vocab covers the
+// Recognized Entities terms, whose own context is not published yet.
+export const EXAMPLES_CONTEXT_URL =
+  'https://www.w3.org/ns/credentials/examples/v2';
+export const EXAMPLES_CONTEXT = {
+  '@context': {'@vocab': 'https://www.w3.org/ns/credentials/examples#'}
 };
 
 const toEntries = c => c instanceof Map ? [...c] : Object.entries(c);
 const LOCAL = new Map([
   ...toEntries(credentialsContext.contexts),
   ...toEntries(dataIntegrityContext.contexts),
-  [TEST_CONTEXT_URL, TEST_CONTEXT]
+  [EXAMPLES_CONTEXT_URL, EXAMPLES_CONTEXT]
 ]);
 
 // The Ed25519 did:key for a public label. A test key only; it has no other use.
