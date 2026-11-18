@@ -54,7 +54,7 @@ async function readFixture(relativePath) {
 }
 
 // Runs recognition on the named implementation.
-async function verifyOn(name, credentials, options) {
+export async function verifyOn(name, credentials, options) {
   const url = endpointUrls().get(name);
   expect(url, `${name} has no verify endpoint`).to.be.a('string');
   return verify(url, credentials, options);
@@ -62,7 +62,7 @@ async function verifyOn(name, credentials, options) {
 
 const typesOf = outcome => outcome.errors.map(error => error?.type);
 
-function expectAccepted(outcome, message) {
+export function expectAccepted(outcome, message) {
   expect(outcome.recognized && outcome.actionRecognized,
     `${message}: recognized and actionRecognized must both be true ` +
     `(errors: ${JSON.stringify(typesOf(outcome))})`).to.equal(true);
@@ -89,7 +89,7 @@ const shapesForTests = async () => {
   return shapeLists;
 };
 
-async function conformingChain() {
+export async function conformingChain() {
   const known = await readFixture('signed/known-issuer-credential.json');
   const {conformingList} = await shapesForTests();
   return [known, conformingList];

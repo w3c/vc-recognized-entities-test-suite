@@ -4,12 +4,13 @@
 
 // Hand-written: scripts/scaffold-tests.mjs does not regenerate this file.
 //
-// Each VIOLATIONS entry is one change made to the known-issuer credential
-// (scripts/make-fixtures.mjs). The verifier must refuse each changed one.
+// Each row is one spec statement, titled with its sentence. The checks are
+// written out below. Each violation is one change made to the known-issuer
+// credential (scripts/make-fixtures.mjs), and the verifier must refuse it.
 
 import {
-  acceptsConforming, refusesViolation, setupStatementMatrix, statementTests,
-  violationOutcome
+  conformingChain, expectAccepted, expectRefused, setupStatementMatrix,
+  statementTests, verifyOn, violationOutcome
 } from '../statement-suite.js';
 import {describe} from 'mocha';
 import {expect} from 'chai';
@@ -41,24 +42,31 @@ const VIOLATIONS = [
   ['3-5-credential-validators-5', 'delete validator mediaType', '3.5 (5)']
 ];
 
-// One negative per violation, labelled with its change and statement.
-function perViolation(check) {
-  return Object.fromEntries(VIOLATIONS.map(([key, change, statement]) =>
-    [`${key} (${change}; breaks ${statement})`,
-      name => check(name, key)]));
+// One negative per violation. The label gives the change and the statement.
+function violationChecks(check) {
+  const checks = {};
+  for(const [key, change, statement] of VIOLATIONS) {
+    checks[`${key}: ${change} (breaks ${statement})`] =
+      name => check(name, key);
+  }
+  return checks;
 }
 
 describe('1.1 Conformance', function() {
   setupStatementMatrix(this);
 
-  // Each row is one spec statement. Its title is the statement text.
   describe(`1-1-conformance-1: ${NORMATIVE['1-1-conformance-1']}`,
     function() {
       statementTests('1-1-conformance-1', {
         positive: {
-          'the conforming credential is recognized': acceptsConforming
+          // the conforming credential is accepted with no errors
+          'the conforming credential is recognized': async name =>
+            expectAccepted(await verifyOn(name, await conformingChain()),
+              'the conforming list')
         },
-        negative: perViolation(refusesViolation)
+        negative: violationChecks(async (name, key) =>
+          // the credential with this one change is refused
+          expectRefused(await violationOutcome(name, key), key))
       });
     });
 
@@ -66,9 +74,13 @@ describe('1.1 Conformance', function() {
     function() {
       statementTests('1-1-conformance-2', {
         positive: {
-          'the conforming credential produces no errors': acceptsConforming
+          // the conforming credential produces no errors
+          'the conforming credential produces no errors': async name =>
+            expectAccepted(await verifyOn(name, await conformingChain()),
+              'the conforming list')
         },
-        negative: perViolation(async (name, key) => {
+        negative: violationChecks(async (name, key) => {
+          // the credential with this one change produces at least one error
           const outcome = await violationOutcome(name, key);
           expect(outcome.errors, `${key}: errors`).to.not.be.empty;
         })
