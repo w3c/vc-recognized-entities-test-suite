@@ -61,6 +61,22 @@ The test DIDs are `did:key` identifiers. The credentials use the
 Entities context is not published yet, so the examples context covers its
 terms.
 
+### Hosted fixtures
+
+The report site hosts signed test documents that a verifier can fetch, and
+that implementers can download to test on their own. They do not expire.
+
+| URL | Document |
+|---|---|
+| [`fixtures/anchor/recognized-issuers.json`](https://w3c.github.io/vc-recognized-entities-test-suite/fixtures/anchor/recognized-issuers.json) | The test anchor's recognized entity credential. It recognizes the test issuer for the `issue` action. |
+| [`fixtures/known-issuer-credential.json`](https://w3c.github.io/vc-recognized-entities-test-suite/fixtures/known-issuer-credential.json) | A credential from the test issuer, whose `recognizedIn` points at the list above. |
+| [`fixtures/validators/credential-subject.schema.json`](https://w3c.github.io/vc-recognized-entities-test-suite/fixtures/validators/credential-subject.schema.json) | The JSON Schema credential validator of the list above. |
+| [`fixtures/validators/conforming.js`](https://w3c.github.io/vc-recognized-entities-test-suite/fixtures/validators/conforming.js) | A conforming JavaScript credential validator. |
+
+They are in `fixtures/` in this repository, and `scripts/sign-fixtures.mjs`
+writes them with the suite's test keys. The tests do not depend on them: every
+presentation carries the documents it needs.
+
 ## Report
 
 `npm test` writes the interoperability report to `reports/index.html` and

@@ -199,13 +199,19 @@ export async function knownCredentialDocument(change = () => {}) {
   return sign(document, issuer);
 }
 
+// The JSON Schema of the anchor's credential validator. It accepts any
+// credential that has a credentialSubject.
+export const CREDENTIAL_SUBJECT_SCHEMA = {
+  type: 'object', required: ['credentialSubject']
+};
+
 // The anchor's recognized list for the test issuer, with one change applied
 // before the anchor signs it. Its validator accepts any credential that has a
 // credentialSubject, so a refusal comes from the change, not the validator.
 export async function anchorListWith(change = () => {}) {
   const anchor = await anchorKey();
   const issuer = await issuerKey();
-  const schema = {type: 'object', required: ['credentialSubject']};
+  const schema = CREDENTIAL_SUBJECT_SCHEMA;
   const doc = {
     '@context': CONTEXT,
     id: ANCHOR_LIST_URL,
