@@ -122,6 +122,43 @@ export function credentialWith(change) {
     [await knownCredentialDocument(change), await anchorListWith()];
 }
 
+// The same, with the anchor's list using a JavaScript credential validator
+// whose validator code is `code`.
+export function listWithValidator(code) {
+  return listWith(doc => {
+    doc.credentialSubject[0].recognizedTo.credentialValidator =
+      javascriptValidator(code);
+  });
+}
+
+// A JavaScript credential validator (4.4.1) with the validator code `code`,
+// embedded as a data: URL.
+export function javascriptValidator(code) {
+  return {
+    type: 'CredentialValidator',
+    id: 'data:text/javascript,' + encodeURIComponent(code),
+    mediaType: 'text/javascript'
+  };
+}
+
+// Validator code that conforms to 4.4 and 4.4.1.1: it throws an
+// UNRECOGNIZED_OPTION_ERROR for an option it does not know, and otherwise
+// finds the credential valid.
+export const CONFORMING_VALIDATOR_CODE = `
+export default function validate(credential, options) {
+  const known = ['chain', 'action', 'evaluationDateTime'];
+  for(const name of Object.keys(options)) {
+    if(!known.includes(name)) {
+      const error = new Error('Unrecognized option "' + name + '".');
+      error.type =
+        'https://www.w3.org/TR/vc-data-model#UNRECOGNIZED_OPTION_ERROR';
+      throw error;
+    }
+  }
+  return {valid: true, errors: [], warnings: []};
+}
+`;
+
 // The credential validator in the anchor's list `doc`.
 export function validatorOf(doc) {
   return doc.credentialSubject[0].recognizedTo.credentialValidator;
