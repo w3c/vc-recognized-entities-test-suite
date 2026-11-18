@@ -59,6 +59,10 @@ describe('3.5 Credential Validators', function() {
         await refuses('3.5 (5): validator mediaType deleted', listWith(doc => {
           delete validatorOf(doc).mediaType;
         }));
+        await refuses('3.5 (5): validator mediaType text/plain',
+          listWith(doc => {
+            validatorOf(doc).mediaType = 'text/plain';
+          }));
       });
     });
   }

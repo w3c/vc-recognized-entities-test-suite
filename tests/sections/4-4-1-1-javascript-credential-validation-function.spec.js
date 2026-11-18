@@ -52,6 +52,8 @@ describe('4.4.1.1 JavaScript Credential Validation Function', function() {
           listWithValidator(returns({errors: [], warnings: []})));
         await refuses('4.4.1.1 (2): valid is not a boolean',
           listWithValidator(returns({valid: 'true'})));
+        await refuses('4.4.1.1 (2): valid false',
+          listWithValidator(returns({valid: false})));
       });
       statementTest({
         name, exchange,
