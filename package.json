@@ -32,6 +32,7 @@
     "eslint-config-digitalbazaar": "^5.0.1",
     "eslint-plugin-jsdoc": "^48.11.0",
     "eslint-plugin-unicorn": "^49.0.0",
+    "handlebars": "^4.7.7",
     "jsonld-signatures": "^10.0.0",
     "quickjs-emscripten": "0.31.0"
   }
