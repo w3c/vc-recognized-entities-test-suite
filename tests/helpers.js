@@ -30,6 +30,13 @@ export function setupStatementMatrix(suite, names) {
   suite.columnLabel = 'Implementation';
 }
 
+// Records a row's statement text for the report. At-risk rows lose their
+// cells, so the report reads their text from this registry.
+export function recordRow(rowId, statement) {
+  globalThis.interopRowText ??= {};
+  globalThis.interopRowText[rowId] = statement;
+}
+
 // Runs one check. A failure is recorded in failures, not thrown, so the other
 // checks in the same test still run. The test fails once, after all checks.
 export async function attempt(failures, label, run) {

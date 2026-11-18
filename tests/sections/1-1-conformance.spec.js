@@ -13,11 +13,12 @@
 
 import {
   anchorListWith, attempt, knownCredentialDocument, knownIssuerCredential,
-  participate, runtimeDateTime, setupStatementMatrix
+  participate, recordRow, runtimeDateTime, setupStatementMatrix
 } from '../helpers.js';
 import {describe, it} from 'mocha';
 import {expect} from 'chai';
 import {filterByTag} from 'vc-test-suite-implementations';
+import {LINK} from '../normative-links.js';
 import {NORMATIVE} from '../normative-statements.js';
 
 // Verifiers tagged for this suite. Each one gets its own describe below.
@@ -36,6 +37,8 @@ describe('1.1 Conformance', function() {
       it(`${NORMATIVE['1-1-conformance-2']}`, async function() {
         this.test.cell = {columnId: name, rowId: '1-1-conformance-2',
           statement: NORMATIVE['1-1-conformance-2']};
+        this.test.link = LINK['1-1-conformance-2'];
+        recordRow('1-1-conformance-2', NORMATIVE['1-1-conformance-2']);
         const exchange = verifierExchangeOf(name);
         if(!exchange) {
           this.test.cell.skipMessage = 'no verifier exchange configured';
