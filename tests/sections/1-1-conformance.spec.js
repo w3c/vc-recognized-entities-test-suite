@@ -24,10 +24,10 @@ import {NORMATIVE} from '../normative-statements.js';
 // Verifiers tagged for this suite. Each one gets its own describe below.
 const tag = 'recognized-entities';
 const {match} = filterByTag({tags: [tag], property: 'verifiers'});
-// The verifier exchange of each implementation: the verifierExchange field on
-// its verifier entry.
-const verifierExchangeOf = name => match.get(name).settings.verifiers
-  .find(v => v.verifierExchange)?.verifierExchange;
+// The exchange of each implementation: the exchange field on its verifier
+// entry.
+const exchangeOf = name => match.get(name).settings.verifiers
+  .find(v => v.exchange)?.exchange;
 
 describe('1.1 Conformance', function() {
   setupStatementMatrix(this, match.keys());
@@ -39,9 +39,9 @@ describe('1.1 Conformance', function() {
           statement: NORMATIVE['1-1-conformance-2']};
         this.test.link = LINK['1-1-conformance-2'];
         recordRow('1-1-conformance-2', NORMATIVE['1-1-conformance-2']);
-        const exchange = verifierExchangeOf(name);
+        const exchange = exchangeOf(name);
         if(!exchange) {
-          this.test.cell.skipMessage = 'no verifier exchange configured';
+          this.test.cell.skipMessage = 'no exchange configured';
           this.skip();
         }
         const failures = [];
