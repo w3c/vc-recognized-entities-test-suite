@@ -8,6 +8,10 @@
 import {
   CREDENTIALS_V2, EXAMPLES_CONTEXT_URL, keyFromLabel, sign, signPresentation
 } from './signing.js';
+import {expect} from 'chai';
+import {it} from 'mocha';
+import {LINK} from './normative-links.js';
+import {NORMATIVE} from './normative-statements.js';
 import {randomUUID} from 'node:crypto';
 import {readFile} from 'node:fs/promises';
 
@@ -72,7 +76,43 @@ export async function participate(exchange, credentials) {
   return {status: response.status};
 }
 
+// Statement tests ----------------------------------------------------------
+
+// One test for one statement and one implementation: the conforming
+// presentation must get 200, and the presentation with the statement broken
+// must get 400. `broken` builds the credentials of that presentation (see
+// listWith and credentialWith). Skipped when the verifier has no exchange.
+export function statementTest({name, exchange, rowId, broken}) {
+  it(NORMATIVE[rowId], async function() {
+    this.test.cell = {columnId: name, rowId, statement: NORMATIVE[rowId]};
+    this.test.link = LINK[rowId];
+    recordRow(rowId, NORMATIVE[rowId]);
+    if(!exchange) {
+      this.test.cell.skipMessage = 'no verifier exchange configured';
+      this.skip();
+    }
+    const conforming = await participate(exchange, await listWith()());
+    expect(conforming.status, 'the conforming presentation').to.equal(200);
+    const refused = await participate(exchange, await broken());
+    expect(refused.status, 'the presentation with the statement broken')
+      .to.equal(400);
+  });
+}
+
 // Documents ----------------------------------------------------------------
+
+// The credentials of a presentation: the known issuer credential and the
+// anchor's list, with `change` applied to the list.
+export function listWith(change = () => {}) {
+  return async () =>
+    [await knownIssuerCredential(), await anchorListWith(change)];
+}
+
+// The same, with `change` applied to the credential instead.
+export function credentialWith(change) {
+  return async () =>
+    [await knownCredentialDocument(change), await anchorListWith()];
+}
 
 // The known issuer credential: a credential from the recognized test issuer,
 // from the signed fixtures.

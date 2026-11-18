@@ -11,8 +11,8 @@
 // broken must get 400.
 
 import {
-  anchorListWith, attempt, knownCredentialDocument, knownIssuerCredential,
-  participate, recordRow, runtimeDateTime, setupStatementMatrix
+  attempt, credentialWith, listWith, participate, recordRow, runtimeDateTime,
+  setupStatementMatrix
 } from '../helpers.js';
 import {describe, it} from 'mocha';
 import {expect} from 'chai';
@@ -55,12 +55,6 @@ describe('1.1 Conformance', function() {
           });
         const accepts = (label, documents) => sends(label, 200, documents);
         const refuses = (label, documents) => sends(label, 400, documents);
-        // The known issuer credential and the anchor's list, with `change`
-        // applied to the list, or to the credential.
-        const listWith = change => async () =>
-          [await knownIssuerCredential(), await anchorListWith(change)];
-        const credentialWith = change => async () =>
-          [await knownCredentialDocument(change), await anchorListWith()];
 
         await accepts('the conforming presentation', listWith(() => {}));
         await refuses('3.1 (2): delete issuer type', listWith(doc => {
