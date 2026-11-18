@@ -15,8 +15,11 @@ import {NORMATIVE} from './normative-statements.js';
 import {randomUUID} from 'node:crypto';
 import {readFile} from 'node:fs/promises';
 
-const ANCHOR_LIST_URL =
-  'https://anchor.example/credentials/recognized-issuers.json';
+// Where the hosted fixtures are published (see the README, "Hosted
+// fixtures"). The anchor's list is hosted there, at ANCHOR_LIST_URL.
+export const FIXTURES_URL =
+  'https://w3c.github.io/vc-recognized-entities-test-suite/fixtures/';
+const ANCHOR_LIST_URL = FIXTURES_URL + 'anchor/recognized-issuers.json';
 const CONTEXT = [CREDENTIALS_V2, EXAMPLES_CONTEXT_URL];
 
 const anchorKey = () => keyFromLabel('vc-recognized-entities test anchor');
@@ -175,11 +178,10 @@ export const unsatisfiedValidator = {
 };
 
 // The known issuer credential: a credential from the recognized test issuer,
-// from the signed fixtures.
+// the hosted fixture.
 export async function knownIssuerCredential() {
   return JSON.parse(await readFile(new URL(
-    './fixtures/recognized-entities/signed/known-issuer-credential.json',
-    import.meta.url), 'utf8'));
+    '../fixtures/known-issuer-credential.json', import.meta.url), 'utf8'));
 }
 
 // The known issuer credential built at run time, with one change applied
@@ -223,11 +225,7 @@ export async function anchorListWith(change = () => {}) {
       legalName: {'@value': 'Test Anchor Legal Name LLC', '@language': 'en'},
       image: 'data:image/png;base64,iVBORw0KGgo=',
       url: 'https://anchor.example/',
-      sameAs: ['https://anchor.example/entities/test-anchor'],
-      recognizedIn: {
-        id: 'https://anchor.example/lists/recognized-issuers.json',
-        type: 'RecognizedEntityCredential'
-      }
+      sameAs: ['https://anchor.example/entities/test-anchor']
     },
     validFrom: '2025-01-01T00:00:00Z',
     credentialSubject: [{
