@@ -13,6 +13,7 @@ import {
 } from '../statement-suite.js';
 import {describe} from 'mocha';
 import {expect} from 'chai';
+import {NORMATIVE} from '../normative-statements.js';
 
 // [fixture key, the change made to the credential, the statement it breaks]
 const VIOLATIONS = [
@@ -50,24 +51,27 @@ function perViolation(check) {
 describe('1.1 Conformance', function() {
   setupStatementMatrix(this);
 
-  // 1-1-conformance-1: Specifically, all relevant normative statements in
-  // Section 3. Data Model of this document MUST be enforced.
-  statementTests('1-1-conformance-1', {
-    positive: {
-      'the conforming credential is recognized': acceptsConforming
-    },
-    negative: perViolation(refusesViolation)
-  });
+  // Each row is one spec statement. Its title is the statement text.
+  describe(`1-1-conformance-1: ${NORMATIVE['1-1-conformance-1']}`,
+    function() {
+      statementTests('1-1-conformance-1', {
+        positive: {
+          'the conforming credential is recognized': acceptsConforming
+        },
+        negative: perViolation(refusesViolation)
+      });
+    });
 
-  // 1-1-conformance-2: Conforming processors MUST produce errors when
-  // non-conforming documents are consumed.
-  statementTests('1-1-conformance-2', {
-    positive: {
-      'the conforming credential produces no errors': acceptsConforming
-    },
-    negative: perViolation(async (name, key) => {
-      const outcome = await violationOutcome(name, key);
-      expect(outcome.errors, `${key}: errors`).to.not.be.empty;
-    })
-  });
+  describe(`1-1-conformance-2: ${NORMATIVE['1-1-conformance-2']}`,
+    function() {
+      statementTests('1-1-conformance-2', {
+        positive: {
+          'the conforming credential produces no errors': acceptsConforming
+        },
+        negative: perViolation(async (name, key) => {
+          const outcome = await violationOutcome(name, key);
+          expect(outcome.errors, `${key}: errors`).to.not.be.empty;
+        })
+      });
+    });
 });
