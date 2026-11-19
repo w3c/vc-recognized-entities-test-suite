@@ -9,7 +9,7 @@
 // rule must be refused (400).
 
 import {
-  listWith, setupStatementMatrix, statementTest, validatorOf
+  FIXTURES_URL, listWith, setupStatementMatrix, statementTest, validatorOf
 } from '../helpers.js';
 import {describe} from 'mocha';
 import {filterByTag} from 'vc-test-suite-implementations';
@@ -40,6 +40,13 @@ describe('3.5 Credential Validators', function() {
         name, exchange, rowId: '3-5-credential-validators-2'
       }, async ({accepts, refuses}) => {
         await accepts('the conforming presentation', listWith());
+        // The same JSON Schema, hosted with the suite's fixtures (see the
+        // README, "Hosted fixtures"), so the verifier fetches it.
+        await accepts('validator id is an https URL that links to the file',
+          listWith(doc => {
+            validatorOf(doc).id =
+              FIXTURES_URL + 'validators/credential-subject.schema.json';
+          }));
         await refuses('3.5 (2): validator id = schema.json', listWith(doc => {
           validatorOf(doc).id = 'schema.json';
         }));
